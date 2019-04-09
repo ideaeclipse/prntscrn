@@ -20,7 +20,7 @@ The purpose of this is to create a private alternative to lightshot, with no add
 - [ ] Setup MySQL to work with boiler plate authentication system
 - [ ] Create endpoints for client to interact with.
   - [ ] POST /image/
-    - [ ] test
+        - [ ] GET
   - [ ] GET /image/{id}
   - [ ] DELETE /image
 - [ ] Add 2FA to boiler plate
