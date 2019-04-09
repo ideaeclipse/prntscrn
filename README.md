@@ -6,4 +6,4 @@ The purpose of this is to create a private alternative to lightshot, with no add
 
 ## Task tracking list
 
-* - [] Tes
+- [ ] Tes
