@@ -2,7 +2,7 @@
 Api for prnstscrn client to interact with along with the admin/public website
 
 ## Install
-* all you have to do is install all gems
+* all you have to do is install all gems and install active_storage to handle file uploads
 ```
 bundle install
 rails active_storage:install
