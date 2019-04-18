@@ -22,6 +22,8 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [ ] Setup MySQL to work with boiler plate authentication system
   - [X] Create endpoints for client to interact with.
   - [X] Manage Uploads via admin website
+  - [ ] Kubernetes shell to run all services
+  - [ ] "Make" file to install everything with 1 command
   - [ ] Add 2FA to boiler plate 
   - [ ] Staticstics on admin panel
 
