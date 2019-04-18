@@ -36,6 +36,8 @@ User.create!(username: "$USERNAME", password: Digest::SHA256.hexdigest("$PASSWOR
 
 ## Endpoints
 
+
+### Users/Authentication endpoints
 * POST /login
     * Params: json string with keys username and password
         ```json
@@ -93,3 +95,33 @@ User.create!(username: "$USERNAME", password: Digest::SHA256.hexdigest("$PASSWOR
     * User must pass a valid Admin Authorization token in request header
     * If valid will return a json string saying Authorized
     * Else will return a json string saying unauthorized
+
+### Prntscrn endpoints
+
+* GET /image
+    * User must pass a valid Admin Authorization token in request header
+    * Errors
+        * All errors are handled by authentication methods
+    * Success
+        * Returns a json array of all images entries that exist, each sub json string contains one key, id
+
+* GET /image/:id
+    * Public endpoint
+    * Errors
+        * Returns a status code of 400 if the id doesn't exist in the database
+    * Success
+        * Renders a image to the browser
+
+* POST /image
+    * User must pass a valid Admin Authorization token in request header
+    * Errors
+        * All errors are handled by authentication methods
+    * Success
+        * Returns a json string with key url, which is a link to the image
+
+* DELETE /image/:id
+    * User must pass a valid Admin Authorization token in request header
+    * Errors
+        * Returns a status code of 400 if the id doesn't exist in the database
+    * Success
+        * Returns a json string saying the image was deleted 
