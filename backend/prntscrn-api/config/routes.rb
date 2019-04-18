@@ -7,4 +7,6 @@ Rails.application.routes.draw do
 
   resources :user, only: [:index, :create, :destroy]
   resources :image, only:[:index, :show, :create, :destroy]
+
+  get "*path", to: "unknown#unknown"
 end

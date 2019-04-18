@@ -43,7 +43,7 @@ class ImageController < ApplicationController
     image.deletehash = response["deletehash"]
     # Updated model row in table
     image.save
-    render json: {url: "#{ENV["API_URL"]}/image/#{image.id}"}
+    render json: {url: "#{ENV["API_URL"]}/image/#{image.id}", status: "File Uploaded"}
   end
 
   # DELETE /image/:id
@@ -54,7 +54,9 @@ class ImageController < ApplicationController
     if image.nil?
       return render json: {status: "Image Doesn't exist"}, status: 400
     end
-    RestClient.delete("https://api.imgur.com/3/image/#{image.deletehash}", {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true})
+    unless image.deletehash.nil?
+      RestClient.delete("https://api.imgur.com/3/image/#{image.deletehash}", {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true})
+    end
     image.delete
     render json: {status: "Image deleted"}
   end

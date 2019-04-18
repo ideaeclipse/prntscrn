@@ -3,7 +3,6 @@ class ApplicationController < ActionController::API
 
   # gets user object if the user is authorized
   def auth_user
-    puts "TEST"
     unless request.headers['Authorization'].present?
       return render json: {status: "Missing auth token"}, status: 400
     end
