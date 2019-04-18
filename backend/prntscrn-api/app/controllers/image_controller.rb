@@ -34,16 +34,22 @@ class ImageController < ApplicationController
     image = Image.create!(image_params)
     # Upload to imgur
     response = JSON.parse(RestClient.post('https://api.imgur.com/3/image', {:image => File.new("#{ActiveStorage::Blob.service.path_for(image.file.key)}", 'rb')}, {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true}))
-    response = response["data"]
-    # Delete temp file
-    image.file.purge
-    # Save imgur direct url
-    image.url = response["link"]
-    # Save delete hash to delete in the future
-    image.deletehash = response["deletehash"]
-    # Updated model row in table
-    image.save
-    render json: {url: "#{ENV["API_URL"]}/image/#{image.id}", status: "File Uploaded"}
+    if response["status"] == 200
+      response = response["data"]
+      # Delete temp file
+      image.file.purge
+      # Save imgur direct url
+      image.url = response["link"]
+      # Save delete hash to delete in the future
+      image.deletehash = response["deletehash"]
+      # Updated model row in table
+      image.save
+      render json: {url: "#{ENV["API_URL"]}/image/#{image.id}", status: "File Uploaded"}
+    else
+      image.file.purge
+      image.delete
+      render json: {status: "Error uploading file"}
+    end
   end
 
   # DELETE /image/:id

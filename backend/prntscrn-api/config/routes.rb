@@ -1,4 +1,3 @@
-# TODO: Scaffold setup not manual routes
 Rails.application.routes.draw do
   get "auth_test", to: "user#auth_test"
   get "admin_test", to: "user#admin_test"
