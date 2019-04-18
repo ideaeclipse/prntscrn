@@ -115,6 +115,10 @@ User.create!(username: "$USERNAME", password: Digest::SHA256.hexdigest("$PASSWOR
 
 * POST /image
     * User must pass a valid Admin Authorization token in request header
+    * Requires form data with the key file and the value must be an image file
+      ```
+      curl -H "Authorization: $TOKEN" -F "file=@meme.jpg" localhost:3000/image
+      ```
     * Errors
         * All errors are handled by authentication methods
     * Success
