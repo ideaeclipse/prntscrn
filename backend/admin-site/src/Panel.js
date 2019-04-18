@@ -10,14 +10,12 @@ import axios from "axios";
  */
 export class CreateUser extends Component {
     /**
-     * token: token gathered from login component for backend requests
-     * show: whether to show this component or not
      * username: username of user to create
      * password: password of user to create
      */
     constructor(props) {
         super(props);
-        this.state = {token: props.token, show: true, username: '', password: ''}
+        this.state = {username: '', password: ''}
     }
 
 
@@ -47,7 +45,7 @@ export class CreateUser extends Component {
             "password": this.state.password
         }, {
             headers: {
-                Authorization: this.state.token
+                Authorization: this.props.token
             }
         }).then(res => {
             alert(res.data.status);
@@ -57,33 +55,22 @@ export class CreateUser extends Component {
         event.preventDefault();
     };
 
-    /**
-     * Called when user hits the minimize button
-     */
-    minimize = () => {
-        this.setState({show: false})
-    };
-
     render() {
-        let value = null;
-        if (this.state.show) {
-            value =
-                <div>
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            User-name:
-                            <input type="text" value={this.state.username} onChange={this.handleUserNameChange}/>
-                        </label>
-                        <label>
-                            Password:
-                            <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                        </label>
-                        <input type="submit" value="Submit"/>
-                    </form>
-                    <button onClick={this.minimize}>Minimize</button>
-                </div>
-        }
-        return value
+        return (
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        User-name:
+                        <input type="text" value={this.state.username} onChange={this.handleUserNameChange}/>
+                    </label>
+                    <label>
+                        Password:
+                        <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
+                    </label>
+                    <input type="submit" value="Submit"/>
+                </form>
+            </div>
+        );
     }
 }
 
@@ -96,13 +83,11 @@ export class CreateUser extends Component {
  */
 export class DeleteUser extends Component {
     /**
-     * token: token passed from login to make backend requests
-     * show: whether to show this component
      * data: data loaded from componentDidMount, starts at null
      */
     constructor(props) {
         super(props);
-        this.state = {token: props.token, show: true, data: null};
+        this.state = {data: null};
     }
 
     /**
@@ -113,7 +98,7 @@ export class DeleteUser extends Component {
     componentDidMount() {
         axios.get("http://localhost:3000/user", {
             headers: {
-                Authorization: this.state.token
+                Authorization: this.props.token
             }
         }).then(res => {
             let value = [];
@@ -124,11 +109,7 @@ export class DeleteUser extends Component {
                         <button onClick={() => this.deleteUser(temp)}>Delete</button>
                     </li>);
             }
-            if (value.length > 0)
-                value.push(<li key={res.data.length}>
-                    <button onClick={this.minimize}>Minimize</button>
-                </li>);
-            else
+            if (value.length === 0)
                 value.push(<li key={0}>No Users to Delete</li>);
             this.setState({data: value});
         }).catch(error => {
@@ -144,7 +125,7 @@ export class DeleteUser extends Component {
     deleteUser = (event) => {
         axios.delete("http://localhost:3000/user/" + event.id, {
             headers: {
-                Authorization: this.state.token
+                Authorization: this.props.token
             }
         }).then(res => {
             alert(res.data.status);
@@ -154,18 +135,67 @@ export class DeleteUser extends Component {
         });
     };
 
+    render() {
+        return <ul>{this.state.data}</ul>;
+    }
+}
+
+/**
+ * This class is called when a user wants to see all images that are currently in circulation
+ *
+ * You will be able to view all images and hit the delete button to delete said image
+ */
+export class ShowImages extends Component {
     /**
-     * Called when user clicks minimize button, this button only exists when there is at least 1 user entry that is deletable
+     * data: array loaded from backend, contains all image ids
      */
-    minimize = () => {
-        this.setState({show: false})
+    constructor(props) {
+        super(props);
+        this.state = {data: null};
+    }
+
+    /**
+     * Loads all data from backend, array of hashs with id's of valid images
+     */
+    componentDidMount() {
+        axios.get('http://localhost:3000/image', {
+            headers: {
+                Authorization: this.props.token
+            }
+        }).then(res => {
+            let value = [];
+            for (let i = 0; i < res.data.length; i++) {
+                value.push(<li key={i}>{res.data[i].id} <a href={"http://localhost:3000/image/" + res.data[i].id}
+                                                           target="_blank" rel="noopener noreferrer">Image
+                    Link</a>
+                    <button onClick={() => this.deleteImage(res.data[i].id)}>Delete</button>
+                </li>)
+            }
+            if (res.data.length === 0)
+                value.push(<li key={0}>No images are currently stored</li>);
+            this.setState({data: value})
+        })
+    }
+
+    /**
+     * Called when user hits the delete button beside the image
+     *
+     * Deletes image from backend, based on id
+     */
+    deleteImage = (id) => {
+        axios.delete('http://localhost:3000/image/' + id, {
+            headers: {
+                Authorization: this.props.token
+            }
+        }).then(res => {
+            alert(res.data.status);
+            this.componentDidMount();
+        }).catch(error => {
+            alert(error);
+        });
     };
 
     render() {
-        let value = null;
-        if (this.state.show) {
-            value = <ul>{this.state.data}</ul>;
-        }
-        return value;
+        return <ul>{this.state.data}</ul>;
     }
 }

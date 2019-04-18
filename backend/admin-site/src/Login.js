@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {CreateUser, DeleteUser} from './Panel'
+import {CreateUser, DeleteUser, ShowImages} from './Panel'
 
 /**
  * This class is used for the login component of the webpage
@@ -26,8 +26,10 @@ class Login extends Component {
             token: '',
             isLoggedIn: false,
             showCreateUser: false,
-            showDeleteUser: false
+            showDeleteUser: false,
+            showImages: false
         };
+        this.image = React.createRef();
     }
 
     /**
@@ -86,7 +88,7 @@ class Login extends Component {
      * set the showDeleteUser value to false
      */
     showCreateUser = () => {
-        this.setState({showCreateUser: true, showDeleteUser: false});
+        this.setState({showCreateUser: !this.state.showCreateUser, showDeleteUser: false, showImages: false});
     };
 
     /**
@@ -95,7 +97,16 @@ class Login extends Component {
      * set the showDeleteUser value to false
      */
     showDeleteUser = () => {
-        this.setState({showCreateUser: false, showDeleteUser: true});
+        this.setState({showCreateUser: false, showDeleteUser: !this.state.showDeleteUser, showImages: false});
+    };
+
+    /**
+     * Called when the user clicks the Create User button
+     * sets the showCreateUser value to true
+     * set the showDeleteUser value to false
+     */
+    showImages = () => {
+        this.setState({showCreateUser: false, showDeleteUser: false, showImages: !this.state.showImages});
     };
 
     /**
@@ -108,29 +119,28 @@ class Login extends Component {
             token: '',
             isLoggedIn: false,
             showCreateUser: false,
-            showDeleteUser: false
+            showDeleteUser: false,
+            showImages: false
         });
     };
 
     render() {
-        let value;
         if (this.state.isLoggedIn) {
-            let show;
-            if (this.state.showCreateUser) {
-                show = <CreateUser token={this.state.token}/>
-            } else if (this.state.showDeleteUser) {
-                show = <DeleteUser token={this.state.token}/>
-            }
-            value =
+            return (
                 <div>
                     <p>Logged in</p>
+                    <p>Token: {this.state.token}</p>
                     <button onClick={this.showCreateUser}>Create User</button>
                     <button onClick={this.showDeleteUser}>Delete User</button>
+                    <button onClick={this.showImages}>Images</button>
                     <button onClick={this.logout}>Logout</button>
-                    {show}
-                </div>;
+                    {this.state.showCreateUser ? <CreateUser token={this.state.token}/> : null}
+                    {this.state.showDeleteUser ? <DeleteUser token={this.state.token}/> : null}
+                    {this.state.showImages ? <ShowImages token={this.state.token}/> : null}
+                </div>
+            );
         } else {
-            value =
+            return (
                 <div>
                     <form onSubmit={this.handleSubmit}>
                         <label>
@@ -143,9 +153,9 @@ class Login extends Component {
                         </label>
                         <input type="submit" value="Submit"/>
                     </form>
-                </div>;
+                </div>
+            );
         }
-        return value;
     }
 }
 
