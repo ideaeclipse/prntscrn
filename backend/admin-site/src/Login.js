@@ -110,6 +110,10 @@ class Login extends Component {
         this.setState({showCreateUser: false, showDeleteUser: false, showImages: !this.state.showImages});
     };
 
+    /**
+     * Takes file from input field and uploads to image endpoint
+     * alerts user if there was an error or says File Uploaded
+     */
     handleFileUpload = (event) => {
         let file = event.target.files[0];
         if (file != null) {
@@ -149,16 +153,18 @@ class Login extends Component {
                 <div>
                     <p>Logged in</p>
                     <p>Token: {this.state.token}</p>
-                    <button onClick={this.showCreateUser}>Create User</button>
-                    <button onClick={this.showDeleteUser}>Delete User</button>
-                    <button onClick={this.showImages}>Images</button>
+                    <div>
+                        <button onClick={this.showCreateUser}>Create User</button>
+                        <button onClick={this.showDeleteUser}>Delete User</button>
+                        <button onClick={this.showImages}>Images</button>
+                        <button onClick={this.logout}>Logout</button>
+                        {this.state.showCreateUser ? <CreateUser token={this.state.token}/> : null}
+                        {this.state.showDeleteUser ? <DeleteUser token={this.state.token}/> : null}
+                        {this.state.showImages ? <ShowImages token={this.state.token}/> : null}
+                    </div>
                     <div>
                         <input type="file" onChange={this.handleFileUpload}/>
                     </div>
-                    <button onClick={this.logout}>Logout</button>
-                    {this.state.showCreateUser ? <CreateUser token={this.state.token}/> : null}
-                    {this.state.showDeleteUser ? <DeleteUser token={this.state.token}/> : null}
-                    {this.state.showImages ? <ShowImages token={this.state.token}/> : null}
                 </div>
             );
         } else {
