@@ -1,5 +1,5 @@
-# token-authentication-boilerplate
-Boiler plate for an api token authentication system, has separate admin user privileges 
+# Prntscrn-api
+Api for prnstscrn client to interact with along with the admin/public website
 
 ## Install
 * all you have to do is install all gems
