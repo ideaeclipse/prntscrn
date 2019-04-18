@@ -1,4 +1,3 @@
-# MUST call rails active_storage:install and rails db:migrate before image uploading works
 require 'open-uri'
 class ImageController < ApplicationController
   skip_before_action :auth_user, only: [:show]
