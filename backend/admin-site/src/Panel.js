@@ -1,0 +1,171 @@
+import React, {Component} from 'react';
+import axios from "axios";
+
+/**
+ * This class is called when the user hits the Create User button after being logged in
+ *
+ * it allows users to create a user and receive an alert once created
+ *
+ * TODO: confirm password
+ */
+export class CreateUser extends Component {
+    /**
+     * token: token gathered from login component for backend requests
+     * show: whether to show this component or not
+     * username: username of user to create
+     * password: password of user to create
+     */
+    constructor(props) {
+        super(props);
+        this.state = {token: props.token, show: true, username: '', password: ''}
+    }
+
+
+    /**
+     * Handles the updating of username value from form field
+     */
+    handleUserNameChange = (event) => {
+        this.setState({username: event.target.value});
+    };
+
+
+    /**
+     * Handles the updating of password value from form field
+     */
+    handlePasswordChange = (event) => {
+        this.setState({password: event.target.value});
+    };
+
+    /**
+     * Called when the form is submitted
+     * Makes a web request to /createuser
+     * sends an alert with the status or an error of the status
+     */
+    handleSubmit = (event) => {
+        axios.post("http://localhost:3000/user", {
+            "username": this.state.username,
+            "password": this.state.password
+        }, {
+            headers: {
+                Authorization: this.state.token
+            }
+        }).then(res => {
+            alert(res.data.status);
+        }).catch(error => {
+            alert(error.response.data.status);
+        });
+        event.preventDefault();
+    };
+
+    /**
+     * Called when user hits the minimize button
+     */
+    minimize = () => {
+        this.setState({show: false})
+    };
+
+    render() {
+        let value = null;
+        if (this.state.show) {
+            value =
+                <div>
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            User-name:
+                            <input type="text" value={this.state.username} onChange={this.handleUserNameChange}/>
+                        </label>
+                        <label>
+                            Password:
+                            <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
+                        </label>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                    <button onClick={this.minimize}>Minimize</button>
+                </div>
+        }
+        return value
+    }
+}
+
+/**
+ * This class is called when the user hits the Delete user button after being successfully logged in
+ *
+ * this component shows all users and there is a delete button beside each user, click that button to delete the specific user
+ *
+ * Note: Admin users can't be deleted
+ */
+export class DeleteUser extends Component {
+    /**
+     * token: token passed from login to make backend requests
+     * show: whether to show this component
+     * data: data loaded from componentDidMount, starts at null
+     */
+    constructor(props) {
+        super(props);
+        this.state = {token: props.token, show: true, data: null};
+    }
+
+    /**
+     * Called on creation, or when manually invoked
+     *
+     * Loads all users from backend, puts them into a list if they're not an admin with a delete button
+     */
+    componentDidMount() {
+        axios.get("http://localhost:3000/user", {
+            headers: {
+                Authorization: this.state.token
+            }
+        }).then(res => {
+            let value = [];
+            for (let i = 0; i < res.data.length; i++) {
+                let temp = res.data[i];
+                if (!temp.admin)
+                    value.push(<li key={i}>Username: {temp.username}
+                        <button onClick={() => this.deleteUser(temp)}>Delete</button>
+                    </li>);
+            }
+            if (value.length > 0)
+                value.push(<li key={res.data.length}>
+                    <button onClick={this.minimize}>Minimize</button>
+                </li>);
+            else
+                value.push(<li key={0}>No Users to Delete</li>);
+            this.setState({data: value});
+        }).catch(error => {
+            alert(JSON.stringify(error));
+        });
+    }
+
+    /**
+     * Called when the user clicks the delete button for a created user
+     *
+     * it makes a web request to /deleteuser with JSON data with key username
+     */
+    deleteUser = (event) => {
+        axios.delete("http://localhost:3000/user/" + event.id, {
+            headers: {
+                Authorization: this.state.token
+            }
+        }).then(res => {
+            alert(res.data.status);
+            this.componentDidMount();
+        }).catch(error => {
+            alert(error);
+        });
+    };
+
+    /**
+     * Called when user clicks minimize button, this button only exists when there is at least 1 user entry that is deletable
+     */
+    minimize = () => {
+        this.setState({show: false})
+    };
+
+    render() {
+        let value = null;
+        if (this.state.show) {
+            value = <ul>{this.state.data}</ul>;
+        }
+        return value;
+    }
+}
