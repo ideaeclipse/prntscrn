@@ -24,6 +24,7 @@ class Login extends Component {
             username: '',
             password: '',
             token: '',
+            file: null,
             isLoggedIn: false,
             showCreateUser: false,
             showDeleteUser: false,
@@ -109,6 +110,24 @@ class Login extends Component {
         this.setState({showCreateUser: false, showDeleteUser: false, showImages: !this.state.showImages});
     };
 
+    handleFileUpload = (event) => {
+        let file = event.target.files[0];
+        if (file != null) {
+            let formData = new FormData();
+            formData.append('file', file);
+            axios.post('http://localhost:3000/image', formData, {
+                headers: {
+                    Authorization: this.state.token,
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res => {
+                alert(res.data.status);
+            }).catch(error => {
+                alert(error);
+            })
+        }
+    };
+
     /**
      * Resets all state values which simulates you "logging" out
      */
@@ -133,6 +152,9 @@ class Login extends Component {
                     <button onClick={this.showCreateUser}>Create User</button>
                     <button onClick={this.showDeleteUser}>Delete User</button>
                     <button onClick={this.showImages}>Images</button>
+                    <div>
+                        <input type="file" onChange={this.handleFileUpload}/>
+                    </div>
                     <button onClick={this.logout}>Logout</button>
                     {this.state.showCreateUser ? <CreateUser token={this.state.token}/> : null}
                     {this.state.showDeleteUser ? <DeleteUser token={this.state.token}/> : null}
