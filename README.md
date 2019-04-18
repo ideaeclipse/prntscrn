@@ -35,11 +35,12 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [ ] 2FA
 
 - Backend
-  - [ ] Boiler plate OAuth2.0 Rails system
+  - [X] Boiler plate OAuth2.0 Rails system
+  - [X] Basic admin panel to manage users
   - [ ] Setup MySQL to work with boiler plate authentication system
   - [ ] Create endpoints for client to interact with.
   - [ ] Add 2FA to boiler plate 
-  - [ ] Staticstics and admin panel
+  - [ ] Staticstics on admin panel
   - [ ] User accessible API
 
 
