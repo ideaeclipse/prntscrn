@@ -12,6 +12,7 @@ class Login extends Component {
      * username: username inputted from form data
      * password: password inputted from form data
      * token: gather from calling /login after form submission
+     * key: random key to reset value of file input
      * isLoggedIn: whether you have logged in or not
      * showCreateUser: whether to show the create user panel
      * showDeleteUser: whether to show the delete user panel
@@ -24,6 +25,7 @@ class Login extends Component {
             username: '',
             password: '',
             token: '',
+            key: Math.random(),
             file: null,
             isLoggedIn: false,
             showCreateUser: false,
@@ -115,6 +117,7 @@ class Login extends Component {
      * alerts user if there was an error or says File Uploaded
      */
     handleFileUpload = (event) => {
+        event.preventDefault();
         let file = event.target.files[0];
         if (file != null) {
             let formData = new FormData();
@@ -130,8 +133,10 @@ class Login extends Component {
                     this.setState({showImages: false});
                     this.setState({showImages: true});
                 }
+                this.setState({key: Math.random()});
             }).catch(error => {
                 alert(error);
+                this.setState({key: Math.random()});
             })
         }
     };
@@ -144,6 +149,7 @@ class Login extends Component {
             username: '',
             password: '',
             token: '',
+            key: Math.random(),
             isLoggedIn: false,
             showCreateUser: false,
             showDeleteUser: false,
@@ -167,7 +173,7 @@ class Login extends Component {
                         {this.state.showImages ? <ShowImages token={this.state.token}/> : null}
                     </div>
                     <div>
-                        <input type="file" onChange={this.handleFileUpload}/>
+                        <input type="file" key={this.state.key} onChange={this.handleFileUpload}/>
                     </div>
                 </div>
             );

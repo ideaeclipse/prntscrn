@@ -48,7 +48,7 @@ export class CreateUser extends Component {
      * sends an alert with the status or an error of the status
      */
     handleSubmit = (event) => {
-        if(this.state.password === this.state.passwordConfirm) {
+        if (this.state.password === this.state.passwordConfirm) {
             axios.post("http://localhost:3000/user", {
                 "username": this.state.username,
                 "password": this.state.password
@@ -57,11 +57,12 @@ export class CreateUser extends Component {
                     Authorization: this.props.token
                 }
             }).then(res => {
+                this.setState({username: '', password: '', passwordConfirm: ''});
                 alert(res.data.status);
             }).catch(error => {
                 alert(error.response.data.status);
             });
-        }else
+        } else
             alert("Passwords don't match");
         event.preventDefault();
     };
@@ -80,7 +81,8 @@ export class CreateUser extends Component {
                     </label>
                     <label>
                         Confirm Password:
-                        <input type="password" value={this.state.passwordConfirm} onChange={this.handlePasswordConfirmChange}/>
+                        <input type="password" value={this.state.passwordConfirm}
+                               onChange={this.handlePasswordConfirmChange}/>
                     </label>
                     <input type="submit" value="Submit"/>
                 </form>
@@ -180,15 +182,16 @@ export class ShowImages extends Component {
         }).then(res => {
             let value = [];
             for (let i = 0; i < res.data.length; i++) {
-                value.push(<li key={i}>{res.data[i].id} <a href={"http://localhost:3000/image/" + res.data[i].id}
-                                                           target="_blank" rel="noopener noreferrer">Image
-                    Link</a>
-                    <button onClick={() => this.deleteImage(res.data[i].id)}>Delete</button>
+                value.push(<li key={i}><a href={"http://localhost:3000/image/" + res.data[i].uuid}
+                                          target="_blank" rel="noopener noreferrer">{res.data[i].uuid} </a>
+                    <button onClick={() => this.deleteImage(res.data[i].uuid)}>Delete</button>
                 </li>)
             }
             if (res.data.length === 0)
                 value.push(<li key={0}>No images are currently stored</li>);
             this.setState({data: value})
+        }).catch(error => {
+            alert(error)
         })
     }
 
