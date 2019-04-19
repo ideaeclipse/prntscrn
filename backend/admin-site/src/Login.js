@@ -126,6 +126,10 @@ class Login extends Component {
                 }
             }).then(res => {
                 alert(res.data.status);
+                if (this.state.showImages) {
+                    this.setState({showImages: false});
+                    this.setState({showImages: true});
+                }
             }).catch(error => {
                 alert(error);
             })
