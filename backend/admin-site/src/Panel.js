@@ -12,10 +12,11 @@ export class CreateUser extends Component {
     /**
      * username: username of user to create
      * password: password of user to create
+     * passwordConfirm: copy of password
      */
     constructor(props) {
         super(props);
-        this.state = {username: '', password: ''}
+        this.state = {username: '', password: '', passwordConfirm: ''};
     }
 
 
@@ -35,23 +36,33 @@ export class CreateUser extends Component {
     };
 
     /**
+     * Handles the updating of password confirm value from form field
+     */
+    handlePasswordConfirmChange = (event) => {
+        this.setState({passwordConfirm: event.target.value});
+    };
+
+    /**
      * Called when the form is submitted
      * Makes a web request to /createuser
      * sends an alert with the status or an error of the status
      */
     handleSubmit = (event) => {
-        axios.post("http://localhost:3000/user", {
-            "username": this.state.username,
-            "password": this.state.password
-        }, {
-            headers: {
-                Authorization: this.props.token
-            }
-        }).then(res => {
-            alert(res.data.status);
-        }).catch(error => {
-            alert(error.response.data.status);
-        });
+        if(this.state.password === this.state.passwordConfirm) {
+            axios.post("http://localhost:3000/user", {
+                "username": this.state.username,
+                "password": this.state.password
+            }, {
+                headers: {
+                    Authorization: this.props.token
+                }
+            }).then(res => {
+                alert(res.data.status);
+            }).catch(error => {
+                alert(error.response.data.status);
+            });
+        }else
+            alert("Passwords don't match");
         event.preventDefault();
     };
 
@@ -66,6 +77,10 @@ export class CreateUser extends Component {
                     <label>
                         Password:
                         <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
+                    </label>
+                    <label>
+                        Confirm Password:
+                        <input type="password" value={this.state.passwordConfirm} onChange={this.handlePasswordConfirmChange}/>
                     </label>
                     <input type="submit" value="Submit"/>
                 </form>
