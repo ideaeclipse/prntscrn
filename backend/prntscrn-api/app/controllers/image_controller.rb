@@ -9,7 +9,7 @@ class ImageController < ApplicationController
   def index
     value = []
     Image.all.each do |image|
-      value << {id: image.id}
+      value << {uuid: image.uuid}
     end
     render json: value
   end
@@ -18,7 +18,7 @@ class ImageController < ApplicationController
   # PUBLIC
   # returns an image
   def show
-    image = Image.find_by_id(params[:id])
+    image = Image.find_by_uuid(params[:id])
     if image.nil?
       return render json: {status: "Image Doesn't exist"}, status: 400
     end
@@ -42,9 +42,11 @@ class ImageController < ApplicationController
       image.url = response["link"]
       # Save delete hash to delete in the future
       image.deletehash = response["deletehash"]
+      # Set uuid
+      image.uuid = get_uuid
       # Updated model row in table
       image.save
-      render json: {url: "#{ENV["API_URL"]}/image/#{image.id}", status: "File Uploaded"}
+      render json: {url: "#{ENV["API_URL"]}/image/#{image.uuid}", status: "File Uploaded"}
     else
       image.file.purge
       image.delete
@@ -56,7 +58,7 @@ class ImageController < ApplicationController
   # ADMIN PRIV
   # deletes image based on url id
   def destroy
-    image = Image.find_by_id(params[:id])
+    image = Image.find_by_uuid(params[:id])
     if image.nil?
       return render json: {status: "Image Doesn't exist"}, status: 400
     end
@@ -75,5 +77,16 @@ class ImageController < ApplicationController
       render json: {status: "Must pass file with proper key"}, status: 400
     end
     params.permit(:file)
+  end
+
+  #Gets a uuid that isn't already registered with a user
+  def get_uuid
+    secure = SecureRandom.uuid
+    image = Image.find_by_uuid(secure)
+    if image.nil?
+      secure
+    else
+      get_uuid
+    end
   end
 end

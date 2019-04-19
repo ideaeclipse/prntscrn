@@ -3,7 +3,9 @@
 one:
   url: MyString
   deletehash: MyString
+  uuid: MyString
 
 two:
   url: MyString
   deletehash: MyString
+  uuid: MyString
