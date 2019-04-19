@@ -1,7 +1,7 @@
 require 'open-uri'
 class ImageController < ApplicationController
   skip_before_action :auth_user, only: [:show]
-  before_action :auth_admin, only: [:index, :create, :destroy]
+  before_action :auth_admin, only: [:index, :destroy]
 
   # GET /image
   # ADMIN PRIV
@@ -27,7 +27,7 @@ class ImageController < ApplicationController
   end
 
   # POST /image, must pass image
-  # ADMIN PRIV
+  # USER PRIV
   # upload image and returns url to view
   def create
     # Take param from user
