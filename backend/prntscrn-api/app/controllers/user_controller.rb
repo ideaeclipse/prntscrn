@@ -11,7 +11,7 @@ class UserController < ApplicationController
   def login
     user = User.find_by_username(params[:username])
     if user and user.password == Digest::SHA256.hexdigest(params[:password])
-      user.token = JsonWebToken.encode(user_id: user.id, username: params[:username], user_password: params[:password], nonce: Random.rand(0..1000))
+      user.token = JsonWebToken.encode(time: Time.now.strftime("%d/%m/%Y %H:%M"), user_id: user.id, username: params[:username], user_password: params[:password], nonce: Random.rand(0..1000))
       user.save
       render json: {token: user.token}
     else
