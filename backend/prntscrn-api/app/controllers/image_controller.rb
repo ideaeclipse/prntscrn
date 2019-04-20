@@ -1,4 +1,3 @@
-# TODO Seperate the image attached from the image model, create a file model so you can validate the attributes of both models
 require 'open-uri'
 class ImageController < ApplicationController
   skip_before_action :auth_user, only: [:show]
