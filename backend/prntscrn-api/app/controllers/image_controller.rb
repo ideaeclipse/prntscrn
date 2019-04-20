@@ -32,28 +32,22 @@ class ImageController < ApplicationController
   # upload image and returns url to view
   def create
     # Take param from user
-    image = Image.create!(image_params)
-    if image.file.image?
+    temp_file = TempFile.create!(file_params)
+    if temp_file.file.image?
       # Upload to imgur
-      response = JSON.parse(RestClient.post('https://api.imgur.com/3/image', {:image => File.new("#{ActiveStorage::Blob.service.path_for(image.file.key)}", 'rb')}, {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true}))
-      image.file.purge
+      response = JSON.parse(RestClient.post('https://api.imgur.com/3/image', {:image => File.new("#{ActiveStorage::Blob.service.path_for(temp_file.file.key)}", 'rb')}, {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true}))
+      temp_file.file.purge
+      temp_file.delete
       if response["status"] == 200
         response = response["data"]
-        # Save imgur direct url
-        image.url = response["link"]
-        # Save delete hash to delete in the future
-        image.deletehash = response["deletehash"]
-        # Set uuid
-        image.uuid = get_uuid
-        # Updated model row in table
-        image.save
+        image = Image.create!({url: response["link"], deletehash: response["deletehash"], uuid: get_uuid})
         render json: {url: "#{ENV["API_URL"]}/image/#{image.uuid}", status: "File Uploaded"}
       else
-        image.delete
         render json: {status: "Error uploading file"}
       end
     else
-      image.delete
+      temp_file.file.purge
+      temp_file.delete
       render json: {status: "Not an image file"}
     end
   end
@@ -76,14 +70,14 @@ class ImageController < ApplicationController
   private
 
   #Checks to make sure the file param is passed before execution the post method
-  def image_params
+  def file_params
     unless params[:file].present?
       render json: {status: "Must pass file with proper key"}, status: 400
     end
     params.permit(:file)
   end
 
-  #Gets a uuid that isn't already registered with a user
+  #Gets a uuid that isn't already registered with an image
   def get_uuid
     secure = SecureRandom.uuid
     image = Image.find_by_uuid(secure)

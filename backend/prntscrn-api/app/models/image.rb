@@ -1,3 +1,3 @@
 class Image < ApplicationRecord
-  has_one_attached :file
+  validates_presence_of :url, :deletehash, :uuid
 end
