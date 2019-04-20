@@ -36,7 +36,7 @@ class UserController < ApplicationController
   def create
     temp = User.find_by_username(params[:username])
     if temp.nil?
-      user = User.new(username: params[:username], password: Digest::SHA256.hexdigest(params[:password]), is_admin: false)
+      user = User.create!({username: params[:username], password: Digest::SHA256.hexdigest(params[:password]), is_admin: false})
       user.save
       render json: {status: "User Created"}
     else
