@@ -118,26 +118,30 @@ class Login extends Component {
      */
     handleFileUpload = (event) => {
         event.preventDefault();
+        let acceptable = [".jpg", ".png", ".jpeg"];
         let file = event.target.files[0];
         if (file != null) {
-            let formData = new FormData();
-            formData.append('file', file);
-            axios.post('http://localhost:3000/image', formData, {
-                headers: {
-                    Authorization: this.state.token,
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(res => {
-                alert(res.data.status);
-                if (this.state.showImages) {
-                    this.setState({showImages: false});
-                    this.setState({showImages: true});
-                }
-                this.setState({key: Math.random()});
-            }).catch(error => {
-                alert(error);
-                this.setState({key: Math.random()});
-            })
+            if (acceptable.includes(file.name.substring(file.name.indexOf(".")))) {
+                let formData = new FormData();
+                formData.append('file', file);
+                axios.post('http://localhost:3000/image', formData, {
+                    headers: {
+                        Authorization: this.state.token,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => {
+                    alert(res.data.status);
+                    if (this.state.showImages) {
+                        this.setState({showImages: false});
+                        this.setState({showImages: true});
+                    }
+                    this.setState({key: Math.random()});
+                }).catch(error => {
+                    alert(error);
+                    this.setState({key: Math.random()});
+                });
+            } else
+                alert("File has bad extension")
         }
     };
 
