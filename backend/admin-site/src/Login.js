@@ -140,8 +140,10 @@ class Login extends Component {
                     alert(error);
                     this.setState({key: Math.random()});
                 });
-            } else
-                alert("File has bad extension")
+            } else {
+                alert("File has bad extension");
+                this.setState({key: Math.random()});
+            }
         }
     };
 
