@@ -11,40 +11,40 @@ rails active_storage:install
 ```
 * If you are installing the mysql connector for windows
 * First install the connector archive from the mysql [website](https://downloads.mysql.com/archives/c-odbc/) then extract it to C:\mysql-connector and run the following command
-```
+```bash
 gem install mysql2 -v 0.5.2 --platform=ruby -- '--with-mysql-lib="C:\mysql-connector\lib" --with-mysql-include="C:\mysql-connector\include" --with-mysql-dir="C:\mysql-connector"'
 ```
 
 ## Database Setup For Remote Host
 * You must have a valid linux system on either your local network or external network that is accessible from the rails app
 * I would recommend running this setup in docker, to do that you first must install docker
-```
+```bash
 # For Update / Debian systems
 sudo apt-get install docker.io
 sudo apt-get update
 ```
 * After the setup is complete Add your linux user to the docker group
-```
+```bash
 # $USER is the name of the linux user you want to add to the docker group
 # This allows you to execute docker commands without using root or sudo
 sudo usermod -aG docker $USER
 ```
 * Then run the following docker command
-```
+```bash
 # $ROOT_PASSWORD is the password to login with the root user
 docker run --detach --name=rails-mysql --env="MYSQL_ROOT_PASSWORD=$ROOT_PASSWORD" --network="host" mysql
 ```
 * To check to see if the container is running do
-```
+```bash
 docker ps
 ```
 * Then login to the mysql database (it will take a miunute or two for the mysql server to start)
-```
+```bash
 # This will prompt you for the password, enter $ROOT_PASSWORD
 mysql -u root -h 127.0.0.1 -p
 ```
 * Then enter the following commands
-```
+```bash
 # Substitue $USERNAME and $PASSWORD for login credentials you want to use in your rails app
 # The will create a user and give it all privileges on databases
 create user '$UERNAME'@'%' identified with mysql_native_password by '$PASSWORD';
