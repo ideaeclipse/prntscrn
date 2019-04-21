@@ -87,16 +87,16 @@ production:
 ## First account
 * To create your first account 
 * You have to first create the database and then migrate
-```
+```bash
 rake db:create
 rails db:migrate
 ```
 * Then open a console instance
-```
+```bash
 rails c
 ```
 * Then create a new user with the following values
-```
+```bash
 User.create!(username: "$USERNAME", password: Digest::SHA256.hexdigest("$PASSWORD"), is_admin: true)
 ```
 * Substitute USERNAME and PASSWORD for values of your choice
