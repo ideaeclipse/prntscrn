@@ -86,7 +86,6 @@ production:
 
 ## First account
 * To create your first account 
-* First Modify the config/database.yml file with your mysql login and host settings
 * You have to first create the database and then migrate
 ```
 rake db:create
