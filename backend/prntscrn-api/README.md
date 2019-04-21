@@ -1,5 +1,7 @@
 # Prntscrn-api
 Api for prnstscrn client to interact with along with the admin/public website
+Ruby version: 2.6.X
+Rails version: 5.2.3
 
 ## Install
 * all you have to do is install all gems and install active_storage to handle file uploads
@@ -7,11 +9,18 @@ Api for prnstscrn client to interact with along with the admin/public website
 bundle install
 rails active_storage:install
 ```
+* If you are installing the mysql connector for windows
+* First install the connector archive from the mysql [website](https://downloads.mysql.com/archives/c-odbc/) then extract it to C:\mysql-connector and run the following command
+```
+gem install mysql2 -v 0.5.2 --platform=ruby -- '--with-mysql-lib="C:\mysql-connector\lib" --with-mysql-include="C:\mysql-connector\include" --with-mysql-dir="C:\mysql-connector"'
+```
 
 ## First account
 * To create your first account 
-* First migrate the db
+* First Modify the config/database.yml file with your mysql login and host settings
+* You have to first create the database and then migrate
 ```
+rake db:create
 rails db:migrate
 ```
 * Then open a console instance
