@@ -19,7 +19,7 @@ The purpose of this is to create a private alternative to lightshot, with no add
 - Backend
   - [X] Boiler plate OAuth2.0 Rails system
   - [X] Basic admin panel to manage users
-  - [ ] Setup MySQL to work with boiler plate authentication system
+  - [X] Setup MySQL to work with boiler plate authentication system
   - [X] Create endpoints for client to interact with.
   - [X] Manage Uploads via admin website
   - [ ] Kubernetes shell to run all services
