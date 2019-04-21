@@ -135,7 +135,7 @@ class Login extends Component {
                 }
                 this.setState({key: Math.random()});
             }).catch(error => {
-                alert(error);
+                alert(error.response.data.status);
                 this.setState({key: Math.random()});
             });
         }

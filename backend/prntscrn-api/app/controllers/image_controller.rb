@@ -47,7 +47,7 @@ class ImageController < ApplicationController
     else
       temp_file.file.purge
       temp_file.delete
-      render json: {status: "Not an image file"}
+      render json: {status: "Not an image file"}, status: 400
     end
   end
 
