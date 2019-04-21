@@ -121,7 +121,7 @@ export class DeleteUser extends Component {
             let value = [];
             for (let i = 0; i < res.data.length; i++) {
                 let temp = res.data[i];
-                if (!temp.admin)
+                if (!temp.is_admin)
                     value.push(<li key={i}>Username: {temp.username}
                         <button onClick={() => this.deleteUser(temp)}>Delete</button>
                     </li>);
