@@ -103,7 +103,7 @@ API_URL=$URL_OF_API
 * To create your first account 
 * You have to first create the database and then migrate
 ```bash
-rake db:create
+rake db:create:all
 rails db:migrate
 ```
 * Then open a console instance
