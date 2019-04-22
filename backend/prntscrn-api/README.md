@@ -90,6 +90,15 @@ production:
 rails secret
 ```
 
+### Enviromental Variables
+* Two enviromental variables are needed to run this app
+* One is a valid imgur api key to offload all images to imgur
+* The second is the address of your backend to pass in the response of creating an image
+```
+IMGUR_API=$IMGUR_API_CLIENT_ID
+API_URL=$URL_OF_API
+```
+
 ### First account
 * To create your first account 
 * You have to first create the database and then migrate
