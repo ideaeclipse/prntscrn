@@ -59,12 +59,12 @@ class Login extends Component {
      * second makes the admin_test request to make sure the user is an admin user, else it will display the error
      */
     handleSubmit = (event) => {
-        axios.post("http://localhost:3000/login", {
+        axios.post(process.env.REACT_APP_BACKEND + "/login", {
             "username": this.state.username,
             "password": this.state.password
         }).then(res => {
             this.setState({token: res.data.token});
-            axios.get("http://localhost:3000/admin_test", {
+            axios.get(process.env.REACT_APP_BACKEND + "/admin_test", {
                 headers: {
                     Authorization: this.state.token
                 }
@@ -122,7 +122,7 @@ class Login extends Component {
         if (file != null) {
             let formData = new FormData();
             formData.append('file', file);
-            axios.post('http://localhost:3000/image', formData, {
+            axios.post(process.env.REACT_APP_BACKEND + "/image", formData, {
                 headers: {
                     Authorization: this.state.token,
                     'Content-Type': 'multipart/form-data'
@@ -162,6 +162,7 @@ class Login extends Component {
             return (
                 <div>
                     <p>Logged in</p>
+                    <p>Backend-Url: {JSON.stringify(process.env.REACT_APP_BACKEND)}</p>
                     <p>Token: {this.state.token}</p>
                     <div>
                         <button onClick={this.showCreateUser}>Create User</button>

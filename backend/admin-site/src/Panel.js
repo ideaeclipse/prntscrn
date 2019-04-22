@@ -49,7 +49,7 @@ export class CreateUser extends Component {
      */
     handleSubmit = (event) => {
         if (this.state.password === this.state.passwordConfirm) {
-            axios.post("http://localhost:3000/user", {
+            axios.post(process.env.REACT_APP_BACKEND + "/user", {
                 "username": this.state.username,
                 "password": this.state.password
             }, {
@@ -113,7 +113,7 @@ export class DeleteUser extends Component {
      * Loads all users from backend, puts them into a list if they're not an admin with a delete button
      */
     componentDidMount() {
-        axios.get("http://localhost:3000/user", {
+        axios.get(process.env.REACT_APP_BACKEND + "/user", {
             headers: {
                 Authorization: this.props.token
             }
@@ -140,7 +140,7 @@ export class DeleteUser extends Component {
      * it makes a web request to /deleteuser with JSON data with key username
      */
     deleteUser = (event) => {
-        axios.delete("http://localhost:3000/user/" + event.id, {
+        axios.delete(process.env.REACT_APP_BACKEND + "/user/" + event.id, {
             headers: {
                 Authorization: this.props.token
             }
@@ -175,14 +175,14 @@ export class ShowImages extends Component {
      * Loads all data from backend, array of hashs with id's of valid images
      */
     componentDidMount() {
-        axios.get('http://localhost:3000/image', {
+        axios.get(process.env.REACT_APP_BACKEND + '/image', {
             headers: {
                 Authorization: this.props.token
             }
         }).then(res => {
             let value = [];
             for (let i = 0; i < res.data.length; i++) {
-                value.push(<li key={i}><a href={"http://localhost:3000/image/" + res.data[i].uuid}
+                value.push(<li key={i}><a href={process.env.REACT_APP_BACKEND + "/image/" + res.data[i].uuid}
                                           target="_blank" rel="noopener noreferrer">{res.data[i].uuid} </a>
                     <button onClick={() => this.deleteImage(res.data[i].uuid)}>Delete</button>
                 </li>)
@@ -201,7 +201,7 @@ export class ShowImages extends Component {
      * Deletes image from backend, based on id
      */
     deleteImage = (id) => {
-        axios.delete('http://localhost:3000/image/' + id, {
+        axios.delete(process.env.REACT_APP_BACKEND + '/image/' + id, {
             headers: {
                 Authorization: this.props.token
             }
