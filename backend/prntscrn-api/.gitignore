@@ -10,3 +10,5 @@
 .byebug_history
 /config/master.key
 /.env
+/config/secrets.yml
+.ruby-version
