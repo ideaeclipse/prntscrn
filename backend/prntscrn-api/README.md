@@ -3,19 +3,9 @@ Api for prnstscrn client to interact with along with the admin/public website
 Ruby version: 2.6.X
 Rails version: 5.2.3
 
-## Install
-* all you have to do is install all gems and install active_storage to handle file uploads
-```
-bundle install
-rails active_storage:install
-```
-* If you are installing the mysql connector for windows
-* First install the connector archive from the mysql [website](https://downloads.mysql.com/archives/c-odbc/) then extract it to C:\mysql-connector and run the following command
-```bash
-gem install mysql2 -v 0.5.2 --platform=ruby -- '--with-mysql-lib="C:\mysql-connector\lib" --with-mysql-include="C:\mysql-connector\include" --with-mysql-dir="C:\mysql-connector"'
-```
+## Setup Before starting the rails app
 
-## Database Setup For Remote Host
+### Database Setup For Remote Host
 * You must have a valid linux system on either your local network or external network that is accessible from the rails app
 * I would recommend running this setup in docker, to do that you first must install docker
 ```bash
@@ -84,7 +74,7 @@ production:
   port: 3306
 ```
 
-## First account
+### First account
 * To create your first account 
 * You have to first create the database and then migrate
 ```bash
@@ -101,6 +91,31 @@ User.create!(username: "$USERNAME", password: Digest::SHA256.hexdigest("$PASSWOR
 ```
 * Substitute USERNAME and PASSWORD for values of your choice
 * Setting is_admin to true makes the newly created user an admin or vice versa
+
+## Install Options
+
+### Manual Install
+* all you have to do is install all gems and install active_storage to handle file uploads
+```
+bundle install
+rails active_storage:install
+```
+* If you are installing the mysql connector for windows
+* First install the connector archive from the mysql [website](https://downloads.mysql.com/archives/c-odbc/) then extract it to C:\mysql-connector and run the following command
+```bash
+gem install mysql2 -v 0.5.2 --platform=ruby -- '--with-mysql-lib="C:\mysql-connector\lib" --with-mysql-include="C:\mysql-connector\include" --with-mysql-dir="C:\mysql-connector"'
+```
+
+### Docker install
+* To install using docker all you have to do is run the following command inside the parent directory
+```bash
+docker build -t rails-app .
+```
+* And then give permission to the start script and run the start script
+```bash
+chmod u+rtx start.sh
+./start.sh
+```
 
 ## Authenticating Users
 * There are two built in methods that allow you to authenticate a user before endpoint execution with either admin level privileges or user level privileges
