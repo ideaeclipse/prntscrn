@@ -125,12 +125,8 @@ gem install mysql2 -v 0.5.2 --platform=ruby -- '--with-mysql-lib="C:\mysql-conne
 ### Docker install
 * To install using docker all you have to do is run the following command inside the parent directory
 ```bash
-docker build -t rails-app .
-```
-* And then give permission to the start script and run the start script
-```bash
-chmod u+rtx start.sh
-./start.sh
+chmod u+rtx build.sh
+./build.sh
 ```
 
 ## Authenticating Users
