@@ -3,12 +3,8 @@
 ## Docker File
 * To run with docker execute the following command
 ```bash
-docker build -t react-app .
-```
-* Then give permissions to start.sh and launch
-```bash
-chmod u+rtx start.sh
-./start.sh
+chmod u+rtx build.sh
+./build.sh
 ```
 
 ## Env file
