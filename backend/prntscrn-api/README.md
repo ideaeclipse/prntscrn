@@ -74,6 +74,22 @@ production:
   port: 3306
 ```
 
+### Secrets
+* The JWT token system requires a secure to tokenize hashs
+* You must declare a token in config/secrets.yml 
+```yml
+development:
+  secret_key_base: $KEY
+test:
+  secret_key_base: $KEY
+production:
+  secret_key_base: $KEY
+```
+* To generate a secret you can simply do
+```bash
+rails secret
+```
+
 ### First account
 * To create your first account 
 * You have to first create the database and then migrate
