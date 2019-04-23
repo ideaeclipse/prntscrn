@@ -6,7 +6,7 @@ The purpose of this is to create a private alternative to lightshot, with no add
 
 ## Task tracking list
 - Client
-  - [ ] Take a screenshot of the main monitor and store it inside a temp directory
+  - [X] Take a screenshot of the main monitor and store it inside a temp directory
   - [ ] Take a screenshot of a user slected region of the monitor and stor it
   - [ ] Create a network utility to allow the client to access the backend
   - [ ] Once the photo is taken, upload the photo to the designated end point, and display the url that it was upload to, to the user
