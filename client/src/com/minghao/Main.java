@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static java.lang.Math.abs;
 
 
@@ -56,7 +55,6 @@ public class Main implements ActionListener {
                 Robot robot = new Robot();
                 String format = "jpg";
                 String fileName = "PartialScreenshot." + format;
-                Rectangle s = new Rectangle();
                 Rectangle captureRect = new Rectangle(abs(newPanel.getX()), abs(newPanel.getY()), abs(newPanel.getX2() - newPanel.getX()), abs(newPanel.getY2() - newPanel.getY()));
                 BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
                 ImageIO.write(screenFullImage, format, new File(fileName));
