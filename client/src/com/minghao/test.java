@@ -9,9 +9,11 @@ import java.util.ArrayList;
 @SuppressWarnings("WeakerAccess")
 public class test extends JPanel {
 
+
+    // Declaring variables
     int x, y, x2, y2;
     private BufferedImage screenShot;
-    private ArrayList <JButton> button = new ArrayList<>();
+    private ArrayList <JButton> button;
 
 
     public test(BufferedImage image, ArrayList<JButton> button1) {
@@ -73,6 +75,7 @@ public class test extends JPanel {
         public void mouseReleased(MouseEvent e) {
             setEndPoint(e.getX(), e.getY());
             repaint();
+            // Reposition the button
             for(int i = 0; i < button.size(); i++) {
                 if (y2 < 1000) {
                     button.get(i).setLocation(x2 - i * 75 - 60, y2);
@@ -92,6 +95,7 @@ public class test extends JPanel {
     }
 
     private void drawPerfectRect(Graphics g, int x, int y, int x2, int y2) {
+        // Draw the rectangle
         int px = Math.min(x,x2);
         int py = Math.min(y,y2);
         int pw=Math.abs(x-x2);

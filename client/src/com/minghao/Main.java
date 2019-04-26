@@ -1,7 +1,5 @@
 package com.minghao;
 
-import com.sun.xml.internal.ws.api.pipe.Fiber;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
+
 
 // TODO: Let user resize the rectangle and get the coordinates of the corner - done
 // TODO: Freeze the screen - done
@@ -57,7 +56,8 @@ public class Main implements ActionListener {
                 Robot robot = new Robot();
                 String format = "jpg";
                 String fileName = "PartialScreenshot." + format;
-                Rectangle captureRect = new Rectangle(newPanel.getX(), newPanel.getY(), newPanel.getX2(), newPanel.getY2());
+                Rectangle s = new Rectangle();
+                Rectangle captureRect = new Rectangle(abs(newPanel.getX()), abs(newPanel.getY()), abs(newPanel.getX2() - newPanel.getX()), abs(newPanel.getY2() - newPanel.getY()));
                 BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
                 ImageIO.write(screenFullImage, format, new File(fileName));
                 System.out.println("A partial screenshot saved!");
@@ -80,7 +80,7 @@ public class Main implements ActionListener {
         int height = (int) screenSize.getHeight();
 
         // JFrame information
-        javax.swing.JFrame frame = new javax.swing.JFrame("Example");
+        JFrame frame = new JFrame("Example");
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
