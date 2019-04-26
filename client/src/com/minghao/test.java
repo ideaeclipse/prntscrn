@@ -1,4 +1,4 @@
-package com.company;
+package com.minghao;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.company;
+package com.minghao;
 
 import com.sun.xml.internal.ws.api.pipe.Fiber;
 
