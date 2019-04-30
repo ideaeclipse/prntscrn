@@ -16,13 +16,14 @@ import static java.lang.Math.abs;
 // TODO: Freeze the screen - done
 // TODO: Export the picture
 // TODO: Add authentication (?)
-// TODO: Fix the rectangle bug
-// TODO: Better names for variables
+// TODO: Fix the rectangle bug - done
+// TODO: Better names for variables - Done
 
 
 public class Main implements ActionListener {
-    private test newPanel;
-    private ArrayList<JButton> test1 = new ArrayList<>();
+    // Declaring variables
+    private Frame frame;
+    private ArrayList<JButton> Buttons = new ArrayList<>();
     private Main() {
         overlay();
         CaptureScreenShot();
@@ -30,12 +31,12 @@ public class Main implements ActionListener {
 
     /**
      * Description: Take a complete screenshot of the the main monitor
-     * @return: Return the capture screenshot as a buffered-image
+     * @return : Return the capture screenshot as a buffered-image
      */
     private BufferedImage displayFreezeScreen() {
         try {
             Robot robot = new Robot();
-            Rectangle captureRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+            Rectangle captureRect = new Rectangle(1920,1080);
             return robot.createScreenCapture(captureRect);
 
         } catch (AWTException e) {
@@ -51,15 +52,14 @@ public class Main implements ActionListener {
     private void CaptureScreenShot() {
         try {
             // Declaring variables
-            if (newPanel.getX2() > 0 || newPanel.getY2() > 0) {
+            if (frame.getX2() > 0 || frame.getY2() > 0) {
                 Robot robot = new Robot();
                 String format = "jpg";
                 String fileName = "PartialScreenshot." + format;
-                Rectangle captureRect = new Rectangle(abs(newPanel.getX()), abs(newPanel.getY()), abs(newPanel.getX2() - newPanel.getX()), abs(newPanel.getY2() - newPanel.getY()));
+                Rectangle captureRect = new Rectangle(abs(frame.getX1()), abs(frame.getY1()), abs(frame.getX2() - frame.getX1()), abs(frame.getY2() - frame.getY1()));
                 BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
                 ImageIO.write(screenFullImage, format, new File(fileName));
                 System.out.println("A partial screenshot saved!");
-
             }
         } catch (AWTException | IOException ex) {
             System.err.println(ex);
@@ -69,66 +69,58 @@ public class Main implements ActionListener {
 
     /**
      * Create an overlay for of area where the screenshot can be taken
-     * Lets draw the rectangle using mouse adpater
+     * Lets draw the rectangle using mouse adapter
      */
     private void overlay() {
-        // Get the size of the monitor
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
+        // Save button
+        JButton button = new JButton();
+        button.setSize(100, 50);
+        button.setText("Save");
+        button.addActionListener(this);
+        Buttons.add(button);
+
+        // Upload button
+        button = new JButton();
+        button.setSize(100, 50);
+        button.setText("Upload");
+        button.addActionListener(this);
+        Buttons.add(button);
+
+
 
         // JFrame information
-        JFrame frame = new JFrame("Example");
-        frame.setSize(width, height);
+        frame = new Frame(displayFreezeScreen(), Buttons);
+        frame.setSize(1920, 100);
         frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
         frame.setBackground(new Color(0, 0, 0, 1));
         frame.setLayout(new GridBagLayout());
+        frame.setSize(1920, 1080);
 
-        // TODO: I think we don't need (?) needs more test
-        //getRootPane(frame).setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.DARK_GRAY));
-        //frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-
-        // JButton
-
-        // Save button
-        JButton buttons = new JButton();
-        buttons.setSize(100, 50);
-        buttons.setText("Save");
-        buttons.addActionListener(this);
-        test1.add(buttons);
-
-        // Upload button
-        buttons = new JButton();
-        buttons.setSize(100, 50);
-        buttons.setText("Upload");
-        buttons.addActionListener(this);
-        test1.add(buttons);
-
-        // Panel for the rectangle
-        newPanel = new test(displayFreezeScreen(), test1);
-        newPanel.setOpaque(true);
-        newPanel.setBackground(new Color(255, 255, 255, 0));
-        frame.setContentPane(newPanel);
-        for (JButton aTest1 : test1) {
+        // JButton information
+        for (JButton aTest1 : Buttons) {
             frame.add(aTest1);
         }
-        frame.setVisible(true);
-    }
 
-    public static void main(String arg[]) {
-        new Main();
+        frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton temp = (JButton) e.getSource();
         // Check which button is pressed
-        if(temp == test1.get(0)) {
+        if(temp == Buttons.get(0)) {
             CaptureScreenShot();
-        }else if(temp == test1.get(1)){
-            System.out.println("This has to be implemeneted");
+        }else if(temp == Buttons.get(1)){
+            System.out.println("This has to be implemented");
         }
     }
+
+    public static void main(String arg[]) {
+        new Main();
+    }
+
+
+
 }
 
