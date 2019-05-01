@@ -104,7 +104,6 @@ test:
   secret_key_base: $secret
 production:
   secret_key_base: $secret
-
 EOL
 
 echo "User.create!(username: \"$admin_username\", password: Digest::SHA256.hexdigest(\"$admin_password\"), is_admin: true)" | bundle exec rails c -e production
