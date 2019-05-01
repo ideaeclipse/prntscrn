@@ -74,8 +74,10 @@ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
 
+#Make the user re run script with updated bashrc
+type rbenv >/dev/null 2>&1 || { echo >&2 "Execute the command . ~/.bashrc and then re run this script"; exit 1; }
+
 #download 2.5.5
-source ~/.bashrc
 rbenv install 2.5.5
 rbenv global 2.5.5
 
@@ -88,9 +90,6 @@ bundle install
 
 #Allow for rails execution
 rbenv rehash
-
-#Make the user re run script with updated bashrc
-type rbenv >/dev/null 2>&1 || { echo >&2 "Execute the command . ~/.bashrc and then re run this script"; exit 1; }
 
 #Generate secret
 secret="$(rails secret)"
