@@ -4,7 +4,6 @@
 network_device="ens160"
 local_address=$(/sbin/ip -o -4 addr list $network_device | awk '{print $4}' | cut -d/ -f1)
 public_address="http://$local_address:3000"
-mysql_root_password="root"
 rails_mysql_user_name="rails"
 rails_mysql_user_password="rails"
 imgur_key="d20b3fd520e3603"
@@ -20,12 +19,12 @@ sudo apt-get install -y libssl-dev libreadline-dev -y  zlib1g-dev -y
 #Install docker
 sudo apt-get install -y docker.io
 #Start mysql container with default login
-sudo docker run -dit --name=rails-mysql --env="MYSQL_ROOT_PASSWORD=$mysql_root_password" -p 3306:3306 mysql
+sudo docker run -dit --name=rails-mysql --env="MYSQL_ROOT_PASSWORD=root" -p 3306:3306 mysql
 #Install local mysql client
 sudo apt-get install -y mysql-client
 #Create rails user
 echo "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
-mysql -u root -h 127.0.0.1 -p$rails_mysql_user_password -Bse "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
+mysql -u root -h 127.0.0.1 -proot -Bse "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
 
 #change to api dir
 cd prntscrn-api/
