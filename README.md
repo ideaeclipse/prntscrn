@@ -26,6 +26,6 @@ The purpose of this is to create a private alternative to lightshot, with no add
 
 
 - Auto purger
-  - [ ] Let c work with mysql
-  - [ ] Sleeper thread that has an accessible queue from rails backend
-  - [ ] Execute everyhour where the stack of images will be removed from imgur and from local db
+  - [ ] What language to use
+  - [ ] Sleep thread that queries all images that are an hour or older, every hour and deletes them
+  - [ ] Make this run with the kubernetes cluster and or the base install with just docker
