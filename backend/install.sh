@@ -88,10 +88,8 @@ bundle install
 #Allow for rails execution
 rbenv rehash
 
-#Set all database variables
-rails active_storage:install
-rake RAILS_ENV=production db:create
-rails RAILS_ENV=production db:migrate
+#Make the user re run script with updated bashrc
+type rbenv >/dev/null 2>&1 || { echo >&2 "Execute the command . ~/.bashrc and then re run this script"; exit 1; }
 
 #Generate secret
 secret="$(rails secret)"
@@ -105,6 +103,11 @@ test:
 production:
   secret_key_base: $secret
 EOL
+
+#Set all database variables
+rails active_storage:install
+rake RAILS_ENV=production db:create
+rails RAILS_ENV=production db:migrate
 
 echo "User.create!(username: \"$admin_username\", password: Digest::SHA256.hexdigest(\"$admin_password\"), is_admin: true)" | bundle exec rails c -e production
 
