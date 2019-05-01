@@ -2,7 +2,7 @@
 
 #Modify These values
 local_address=$(/sbin/ip -o -4 addr list ens160 | awk '{print $4}' | cut -d/ -f1)
-public_address="$http://local_address:3000"
+public_address="http://$local_address:3000"
 mysql_root_password="root"
 rails_mysql_user_name="rails"
 rails_mysql_user_password="rails"
