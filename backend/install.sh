@@ -24,7 +24,8 @@ sudo docker run -dit --name=rails-mysql --env="MYSQL_ROOT_PASSWORD=$mysql_root_p
 #Install local mysql client
 sudo apt-get install -y mysql-client
 #Create rails user
-mysql -u root -h 127.0.0.1 -proot -Bse "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
+echo "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
+mysql -u root -h 127.0.0.1 -p$rails_mysql_user_password -Bse "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
 
 #change to api dir
 cd prntscrn-api/
