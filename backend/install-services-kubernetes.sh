@@ -112,6 +112,8 @@ echo "User.create!(username: \"$admin_username\", password: Digest::SHA256.hexdi
 
 #Start api
 cd kubernetes/api/
+chmod u+rtx delete.sh
+./delete.sh
 chmod u+rtx install.sh
 ./install.sh
 
@@ -125,5 +127,7 @@ REACT_APP_BACKEND=$public_address
 EOL
 
 cd kubernetes/
+chmod u+rtx delete.sh
+./delete.sh
 chmod u+rtx install.sh
 ./install.sh
