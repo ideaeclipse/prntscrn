@@ -1,4 +1,5 @@
 #!/bin/sh
-kubectl apply -f config-map.yaml
-kubectl apply -f pod.yaml
+kubectl apply -f pv.yaml
+kubectl apply -f pvc.yaml
+kubectl create -f deployment.yaml
 kubectl apply -f service.yaml

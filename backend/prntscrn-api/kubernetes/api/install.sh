@@ -6,4 +6,4 @@ sudo docker push ideaeclipse/rails-app
 cd kubernetes/api/
 kubectl create -f deployment.yaml
 kubectl apply -f service.yaml
-kubectl autoscale deployment rails-app --max 10 --min 2 --cpu-percent 95
+kubectl autoscale deployment rails-app --max 6 --min 2 --cpu-percent 60

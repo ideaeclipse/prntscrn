@@ -1,3 +1,4 @@
 #!/bin/sh
-kubectl delete configmap mysql-config
-kubectl delete service,pod mysql
+kubectl delete service,deployment mysql
+kubectl delete pvc mysql-pv-claim
+kubectl delete pv mysql-volume
