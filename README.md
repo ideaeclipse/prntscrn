@@ -20,7 +20,7 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [X] Setup MySQL to work with boiler plate authentication system
   - [X] Create endpoints for client to interact with.
   - [X] Manage Uploads via admin website
-  - [ ] Kubernetes shell to run all services
+  - [X] Kubernetes cluster to run all services
   - [X] "Make" file to install everything with 1 command
   - [ ] Staticstics on admin panel
 
