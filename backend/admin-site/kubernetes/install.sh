@@ -6,4 +6,4 @@ sudo docker push ideaeclipse/react-app
 cd kubernetes/
 kubectl create -f deployment.yaml
 kubectl apply -f service.yaml
-kubectl autoscale deployment react-app --max 6 --min 2 --cpu-percent 60
+kubectl autoscale deployment react-app --max 4 --min 2 --cpu-percent 60
