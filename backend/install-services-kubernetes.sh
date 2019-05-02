@@ -3,7 +3,7 @@
 #Modify These values
 network_device="ens160"
 local_address=$(/sbin/ip -o -4 addr list $network_device | awk '{print $4}' | cut -d/ -f1)
-public_address="http://$local_address:3000"
+public_address="http://$local_address:30001"
 rails_mysql_user_name="rails"
 rails_mysql_user_password="rails"
 imgur_key="d20b3fd520e3603"
@@ -19,14 +19,14 @@ sudo apt-get install -y libssl-dev libreadline-dev -y  zlib1g-dev -y
 #Install docker
 sudo apt-get install -y docker.io
 #Start mysql pod and service with default login
-. prntscrn-api/kubernetes/mysql/install.sh
+cd prntscrn-api/kubernetes/mysql
+chmod u+rtx install.sh
+./install.sh
+cd ../../
 #Install local mysql client
 sudo apt-get install -y mysql-client
 #Create rails user
 mysql -u root -P 30000 -h 127.0.0.1 -proot -Bse "create user '$rails_mysql_user_name'@'%' identified with mysql_native_password by '$rails_mysql_user_password';grant all privileges on *.* to $rails_mysql_user_name;flush privileges;"
-
-#change to api dir
-cd prntscrn-api/
 
 #generate database.yml
 rm config/database.yml
@@ -111,10 +111,12 @@ rails RAILS_ENV=production db:migrate
 echo "User.create!(username: \"$admin_username\", password: Digest::SHA256.hexdigest(\"$admin_password\"), is_admin: true)" | bundle exec rails c -e production
 
 #Start api
-. kubernetes/api/install.sh
+cd kubernetes/api/
+chmod u+rtx install.sh
+./install.sh
 
-#Start frontend
-cd ../admin-site
+#Start admin
+cd ../../../admin-site
 
 #Setup env
 cat > .env << EOL
@@ -122,4 +124,6 @@ PORT=3000
 REACT_APP_BACKEND=$public_address
 EOL
 
-. kubernetes/install.sh
+cd kubernetes/
+chmod u+rtx install.sh
+./install.sh
