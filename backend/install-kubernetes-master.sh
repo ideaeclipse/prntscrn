@@ -1,9 +1,9 @@
 #!/bin/sh
-sudo apt install docker.io
+sudo apt install docker.io -y
 sudo systemctl enable docker
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
-sudo apt install kubeadm
+sudo apt install kubeadm -y
 sudo swapoff -a
 sudo hostnamectl set-hostname node-master
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
