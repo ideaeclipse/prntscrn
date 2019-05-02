@@ -1,0 +1,17 @@
+# pod.yaml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: react-app
+  labels:
+    app: react-app
+spec:
+  containers:
+    - name: react-app
+      image: ideaeclipse/react-app:latest
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 3000
+          name: react-app
+  imagePullSecrets:
+    - name: regcred

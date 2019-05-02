@@ -112,8 +112,8 @@ rails RAILS_ENV=production db:migrate
 echo "User.create!(username: \"$admin_username\", password: Digest::SHA256.hexdigest(\"$admin_password\"), is_admin: true)" | bundle exec rails c -e production
 
 #Start api
-chmod u+rtx build.sh
-sudo bash build.sh
+chmod u+rtx docker.sh
+sudo bash docker.sh
 
 #Start frontend
 cd ../admin-site
@@ -124,5 +124,5 @@ PORT=3001
 REACT_APP_BACKEND=$public_address
 EOL
 
-chmod u+rtx build.sh
-sudo bash build.sh
+chmod u+rtx docker.sh
+sudo bash docker.sh
