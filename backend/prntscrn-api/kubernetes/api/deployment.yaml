@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app
+spec:
+  selector:
+    matchLabels:
+      app: rails-app 
+  template:
+    metadata:
+      labels:
+        app: rails-app
+    spec:
+      containers:
+      - name: rails-app
+        image: ideaeclipse/rails-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000

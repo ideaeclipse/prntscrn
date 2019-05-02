@@ -1,2 +1,2 @@
 #!/bin/sh
-kubectl delete service,pod react-app
+kubectl delete service,deployment,hpa react-app
