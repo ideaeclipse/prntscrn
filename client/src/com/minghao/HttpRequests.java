@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+@SuppressWarnings("WeakerAccess")
 public class HttpRequests{
 
     private final String APIBASE = "https://prntscrn-api.thiessem.ca/";
@@ -24,6 +25,7 @@ public class HttpRequests{
         OutputStream os = con.getOutputStream();
         os.write(Object.toString().getBytes(StandardCharsets.UTF_8));
         os.close();
+
         return printOutputStream(con.getInputStream());
     }
 

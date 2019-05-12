@@ -3,14 +3,14 @@ package com.minghao;
 import javax.swing.*;
 import java.awt.*;
 
-public class AuthenticationFrame extends JPanel {
+@SuppressWarnings("WeakerAccess")
+public class AuthenticationPanel extends JPanel {
 
     JButton submit;
     JTextField userName, password;
-    AuthenticationFrame() {
+    AuthenticationPanel() {
         this.setLayout(null);
         this.setBackground(Color.lightGray);
-
         // JTextField
         userName = new JTextField("Username");
         userName.setBounds(150, 145, 200, 35);
