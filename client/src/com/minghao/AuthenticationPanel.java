@@ -3,22 +3,26 @@ package com.minghao;
 import javax.swing.*;
 import java.awt.*;
 
-public class AuthenticationFrame extends JPanel {
+@SuppressWarnings("WeakerAccess")
+public class AuthenticationPanel extends JPanel {
+
 
     JButton submit;
     JTextField userName, password;
-    AuthenticationFrame() {
+
+    AuthenticationPanel() {
+        // Panel information
         this.setLayout(null);
         this.setBackground(Color.lightGray);
 
-        // JTextField
-        userName = new JTextField("Username");
+        // Username JTextField
+        userName = new JTextField("myles");
         userName.setBounds(150, 145, 200, 35);
         userName.setBorder(BorderFactory.createLineBorder(Color.blue));
         userName.setBackground(Color.lightGray);
         this.add(userName);
-
-        password = new JTextField("Password");
+        // Password JTextField
+        password = new JTextField("myles");
         password.setBounds(150, 185, 200, 35);
         password.setBorder(BorderFactory.createLineBorder(Color.blue));
         password.setBackground(Color.lightGray);

@@ -113,7 +113,7 @@ public class Frame extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(Color.RED);
-        //g.drawImage(screenShot, 0, 0, this);
+        g.drawImage(screenShot, 0, 0, this);
         drawPerfectRect(g, a, b);
     }
 
@@ -191,6 +191,4 @@ public class Frame extends JFrame {
 
         }
     }
-
-
 }
