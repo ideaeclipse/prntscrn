@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.Math.abs;
+import static org.jnativehook.keyboard.NativeKeyEvent.VC_ESCAPE;
 import static org.jnativehook.keyboard.NativeKeyEvent.VC_PRINTSCREEN;
 
 
@@ -35,7 +36,7 @@ public class Main implements ActionListener, NativeKeyListener {
     private JFrame authFrame;
     private AuthenticationPanel panel;
     private String token;
-
+    private boolean overlay = false;
     private Main() {
         getInfo();
     }
@@ -112,6 +113,23 @@ public class Main implements ActionListener, NativeKeyListener {
         return null;
     }
 
+    private void uploadPicture(){
+        try {
+            if ((frame.getX2() > 0 || frame.getY2() > 0)) {
+                Robot robot = new Robot();
+                String fileName = "temp" + ".jpg";
+                Rectangle captureRect = new Rectangle(abs(frame.getX1()), abs(frame.getY1()), abs(frame.getX2() - frame.getX1()), abs(frame.getY2() - frame.getY1()));
+                BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
+                ImageIO.write(screenFullImage, "jpg", new File(fileName));
+                HttpRequests con = new HttpRequests();
+                String url = con.postImage(fileName, "image", token);
+                System.out.println(url + " hio");
+            }
+        } catch (AWTException | IOException ex) {
+            System.err.println(ex);
+        }
+    }
+
     /**
      * Description: Capture a screenshot based on a rectangle the user draws
      * (current only save to file)
@@ -145,6 +163,9 @@ public class Main implements ActionListener, NativeKeyListener {
         }
     }
 
+    private void hideOverlay(){
+        frame.setVisible(false);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         // Getting the source of the button that is pressed
@@ -159,11 +180,12 @@ public class Main implements ActionListener, NativeKeyListener {
         } else if (temp == frame.getButton(0)) {
             frame.setTextFieldLocation();
         } else if (temp == frame.getButton(1)) {
-            System.out.println("This has to be implemented");
+            uploadPicture();
         } else if (temp == frame.getButton(2)) {
             CaptureScreenShot(frame.getTextField());
         }
     }
+
 
     public static void main(String arg[]) {
         new Main();
@@ -177,8 +199,13 @@ public class Main implements ActionListener, NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+
         if (nativeKeyEvent.getKeyCode() == VC_PRINTSCREEN) {
+            overlay = true;
             overlay();
+        }
+        if(nativeKeyEvent.getKeyCode() == VC_ESCAPE && overlay){
+            hideOverlay();
         }
     }
 
