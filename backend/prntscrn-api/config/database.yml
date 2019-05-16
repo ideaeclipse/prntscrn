@@ -1,26 +1,26 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: rails_dev
-  username: myles
-  password: root
+  database: prntscrn_dev
+  username: rails
+  password: rails
   host: 10.0.1.7
   port: 3306
 
 test:
   adapter: mysql2
   encoding: utf8
-  database: rails_test
-  username: myles
-  password: root
+  database: prntscrn_test
+  username: rails
+  password: rails
   host: 10.0.1.7
   port: 3306
 
 production:
   adapter: mysql2
   encoding: utf8
-  database: rails_production
-  username: myles
-  password: root
+  database: prntscrn_production
+  username: rails
+  password: rails
   host: 10.0.1.7
   port: 3306
