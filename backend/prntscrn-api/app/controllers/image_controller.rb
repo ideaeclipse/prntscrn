@@ -1,7 +1,8 @@
 require 'open-uri'
 class ImageController < ApplicationController
-  skip_before_action :auth_user, only: [:show]
+  skip_before_action :auth_user, only: :show
   before_action :auth_admin, only: [:index, :destroy]
+  before_action :file_params, only: :create
 
   # GET /image
   # ADMIN PRIV
@@ -31,7 +32,13 @@ class ImageController < ApplicationController
   def create
     # Take param from user
     image = Image.create!({file: params[:file], uuid: SecureRandom.uuid})
-    render json: {uuid: image.uuid}
+    if image.file.image?
+      render json: {status: "File Uploaded", uuid: "#{ENV["API_URL"]}/#{image.uuid}"}
+    else
+      image.file.purge
+      image.delete
+      render json: {status: "File uploaded must be an image"}, status: 400
+    end
   end
 
   # DELETE /image/:id
@@ -54,7 +61,6 @@ class ImageController < ApplicationController
     unless params[:file].present?
       render json: {status: "Must pass file with proper key"}, status: 400
     end
-    params.permit(:file)
   end
 
   #Gets a uuid that isn't already registered with an image
