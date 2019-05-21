@@ -33,7 +33,7 @@ class ImageController < ApplicationController
     # Take param from user
     image = Image.create!({file: params[:file], uuid: SecureRandom.uuid})
     if image.file.image?
-      render json: {status: "File Uploaded", uuid: "#{ENV["API_URL"]}/#{image.uuid}"}
+      render json: {status: "File Uploaded", uuid: "#{ENV["API_URL"]}/image/#{image.uuid}"}
     else
       image.file.purge
       image.delete
