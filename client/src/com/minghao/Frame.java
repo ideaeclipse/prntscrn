@@ -68,6 +68,12 @@ public class Frame extends JFrame {
         this.add(name);
     }
 
+    public int removeButton(){
+        buttons.get(0).setLocation(-100, -100);
+        return 1;
+    }
+
+
     // Following setter sets the top left and bottom right corner of the rectangle
     private void setStartPoint(int x, int y) {
         a.setLocation(x, y);

@@ -14,10 +14,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.Math.abs;
+import static java.lang.Thread.sleep;
 import static org.jnativehook.keyboard.NativeKeyEvent.VC_ESCAPE;
 import static org.jnativehook.keyboard.NativeKeyEvent.VC_PRINTSCREEN;
 
@@ -37,18 +40,35 @@ public class Main implements ActionListener, NativeKeyListener {
     private AuthenticationPanel panel;
     private String token;
     private boolean overlay = false;
+
+
     private Main() {
-        getInfo();
+        int status_code = checkToken();
+        if (status_code != 200)
+            getInfo();
+        else
+            startListener();
+    }
+
+    private int checkToken() {
+        if (new File("tokenText.txt").exists()) {
+            try {
+                token = new String(Files.readAllBytes(Paths.get("tokenText.txt")));
+                HttpRequests con = new HttpRequests();
+                return con.testToken("auth_test", token);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return 401;
     }
 
     private void startListener() {
-        System.out.println("Hu");
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
             System.err.println("There was a problem registering the native hook.");
             System.err.println(ex.getMessage());
-
             System.exit(1);
         }
 
@@ -86,10 +106,14 @@ public class Main implements ActionListener, NativeKeyListener {
         login.put("password", password);
         HttpRequests con = new HttpRequests();
         token = con.sendJson("login", login);
-        authFrame.setVisible(false);
+        authFrame.dispose();
+        saveToken();
         startListener();
     }
 
+    private void saveToken() {
+
+    }
 
     /**
      * Description: Take a complete screenshot of the the main monitor
@@ -113,17 +137,18 @@ public class Main implements ActionListener, NativeKeyListener {
         return null;
     }
 
-    private void uploadPicture(){
+    private void uploadPicture() {
         try {
             if ((frame.getX2() > 0 || frame.getY2() > 0)) {
                 Robot robot = new Robot();
-                String fileName = "temp" + ".jpg";
+                String fileName = "file" + ".png";
                 Rectangle captureRect = new Rectangle(abs(frame.getX1()), abs(frame.getY1()), abs(frame.getX2() - frame.getX1()), abs(frame.getY2() - frame.getY1()));
                 BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
-                ImageIO.write(screenFullImage, "jpg", new File(fileName));
+                ImageIO.write(screenFullImage, "png", new File(fileName));
                 HttpRequests con = new HttpRequests();
                 String url = con.postImage(fileName, "image", token);
-                System.out.println(url + " hio");
+                System.out.println(url);
+                frame.dispose();
             }
         } catch (AWTException | IOException ex) {
             System.err.println(ex);
@@ -138,10 +163,10 @@ public class Main implements ActionListener, NativeKeyListener {
         try {
             if ((frame.getX2() > 0 || frame.getY2() > 0)) {
                 Robot robot = new Robot();
-                String fileName = nameOfFile + ".jpg";
+                String fileName = nameOfFile + ".png";
                 Rectangle captureRect = new Rectangle(abs(frame.getX1()), abs(frame.getY1()), abs(frame.getX2() - frame.getX1()), abs(frame.getY2() - frame.getY1()));
                 BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
-                ImageIO.write(screenFullImage, "jpg", new File(fileName));
+                ImageIO.write(screenFullImage, "png", new File(fileName));
                 System.out.println("A partial screenshot saved!");
             }
         } catch (AWTException | IOException ex) {
@@ -163,11 +188,10 @@ public class Main implements ActionListener, NativeKeyListener {
         }
     }
 
-    private void hideOverlay(){
-        frame.setVisible(false);
-    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+
         // Getting the source of the button that is pressed
         JButton temp = (JButton) e.getSource();
         // Comparing the button pressed with all the buttons
@@ -204,8 +228,8 @@ public class Main implements ActionListener, NativeKeyListener {
             overlay = true;
             overlay();
         }
-        if(nativeKeyEvent.getKeyCode() == VC_ESCAPE && overlay){
-            hideOverlay();
+        if (nativeKeyEvent.getKeyCode() == VC_ESCAPE && overlay) {
+            frame.dispose();
         }
     }
 
