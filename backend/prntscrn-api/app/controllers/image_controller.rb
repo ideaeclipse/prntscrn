@@ -1,7 +1,8 @@
 require 'open-uri'
 class ImageController < ApplicationController
-  skip_before_action :auth_user, only: [:show]
+  skip_before_action :auth_user, only: :show
   before_action :auth_admin, only: [:index, :destroy]
+  before_action :file_params, only: :create
 
   # GET /image
   # ADMIN PRIV
@@ -22,8 +23,7 @@ class ImageController < ApplicationController
     if image.nil?
       return render json: {status: "Image Doesn't exist"}, status: 400
     end
-    data = open(image.url)
-    send_data(data, type: 'image/png', disposition: 'inline')
+    send_data(image.file.download, type: image.file.content_type, filename: image.file.filename.to_s, disposition: 'inline')
   end
 
   # POST /image, must pass image
@@ -31,23 +31,13 @@ class ImageController < ApplicationController
   # upload image and returns url to view
   def create
     # Take param from user
-    temp_file = TempFile.create!(file_params)
-    if temp_file.file.image?
-      # Upload to imgur
-      response = JSON.parse(RestClient.post('https://api.imgur.com/3/image', {:image => File.new("#{ActiveStorage::Blob.service.path_for(temp_file.file.key)}", 'rb')}, {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true}))
-      temp_file.file.purge
-      temp_file.delete
-      if response["status"] == 200
-        response = response["data"]
-        image = Image.create!({url: response["link"], deletehash: response["deletehash"], uuid: get_uuid})
-        render json: {url: "#{ENV["API_URL"]}/image/#{image.uuid}", status: "File Uploaded"}
-      else
-        render json: {status: "Error uploading file"}
-      end
+    image = Image.create!({file: params[:file], uuid: SecureRandom.uuid})
+    if image.file.image?
+      render json: {status: "File Uploaded", uuid: "#{ENV["API_URL"]}/image/#{image.uuid}"}
     else
-      temp_file.file.purge
-      temp_file.delete
-      render json: {status: "Not an image file"}, status: 400
+      image.file.purge
+      image.delete
+      render json: {status: "File uploaded must be an image"}, status: 400
     end
   end
 
@@ -59,9 +49,7 @@ class ImageController < ApplicationController
     if image.nil?
       return render json: {status: "Image Doesn't exist"}, status: 400
     end
-    unless image.deletehash.nil?
-      RestClient.delete("https://api.imgur.com/3/image/#{image.deletehash}", {:"Authorization" => "Client-ID #{ENV["IMGUR_API"]}", :multipart => true})
-    end
+    image.file.purge
     image.delete
     render json: {status: "Image deleted"}
   end
@@ -73,7 +61,6 @@ class ImageController < ApplicationController
     unless params[:file].present?
       render json: {status: "Must pass file with proper key"}, status: 400
     end
-    params.permit(:file)
   end
 
   #Gets a uuid that isn't already registered with an image

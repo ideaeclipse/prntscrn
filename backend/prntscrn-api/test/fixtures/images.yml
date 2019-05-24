@@ -1,11 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  url: MyString
-  deletehash: MyString
   uuid: MyString
 
 two:
-  url: MyString
-  deletehash: MyString
   uuid: MyString
