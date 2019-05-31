@@ -5,8 +5,7 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,10 +42,21 @@ class AuthenticationFrame extends JFrame {
             userName.setBounds(150, 145, 200, 35);
             userName.setBorder(BorderFactory.createLineBorder(Color.blue));
             userName.setBackground(Color.lightGray);
-            userName.addMouseListener(new MouseAdapter(){
+            userName.addKeyListener(new KeyListener() {
                 @Override
-                public void mouseClicked(MouseEvent e){
-                    userName.setText("");
+                public void keyTyped(KeyEvent e) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                   if(userName.getText().equals("Username"))
+                        userName.setText("");
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+
                 }
             });
             this.add(userName);
@@ -56,10 +66,21 @@ class AuthenticationFrame extends JFrame {
             password.setBounds(150, 185, 200, 35);
             password.setBorder(BorderFactory.createLineBorder(Color.blue));
             password.setBackground(Color.lightGray);
-            password.addMouseListener(new MouseAdapter(){
+            password.addKeyListener(new KeyListener() {
                 @Override
-                public void mouseClicked(MouseEvent e){
-                    password.setText("");
+                public void keyTyped(KeyEvent e) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if(password.getText().equals("Password"))
+                        password.setText("");
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+
                 }
             });
             this.add(password);
