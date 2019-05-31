@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,17 +39,29 @@ class AuthenticationFrame extends JFrame {
             this.setBackground(Color.lightGray);
 
             // Username JTextField
-            userName = new JTextField("myles");
+            userName = new JTextField("Username");
             userName.setBounds(150, 145, 200, 35);
             userName.setBorder(BorderFactory.createLineBorder(Color.blue));
             userName.setBackground(Color.lightGray);
+            userName.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    userName.setText("");
+                }
+            });
             this.add(userName);
 
             // Password JTextField
-            password = new JTextField("myles");
+            password = new JTextField("Password");
             password.setBounds(150, 185, 200, 35);
             password.setBorder(BorderFactory.createLineBorder(Color.blue));
             password.setBackground(Color.lightGray);
+            password.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    password.setText("");
+                }
+            });
             this.add(password);
 
             // JButton
@@ -64,11 +78,11 @@ class AuthenticationFrame extends JFrame {
                     HttpRequests con = new HttpRequests();
                     token = String.valueOf(new JSONObject(con.sendJson("login", login)).get("token"));
                     writeToken();
+                    parent.dispose();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
                 System.out.println(token);
-                parent.dispose();
             });
             this.add(submit);
         }

@@ -53,7 +53,6 @@ public class HttpRequests {
         return con.getResponseCode();
     }
 
-
     /**
      *
      *

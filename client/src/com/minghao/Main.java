@@ -77,7 +77,8 @@ public class Main {
                     if(frame == null || !frame.isVisible()) {
                         System.out.println("Take screenshot");
                         try {
-                            token = AuthenticationFrame.token;
+                            if(token == null)
+                                token = AuthenticationFrame.token;
                             createFrame();
                         } catch (AWTException e) {
                             System.out.println("Couldn't take the screenshot error");
@@ -98,5 +99,6 @@ public class Main {
         });
         if(checkToken() != 200)
             new AuthenticationFrame();
+
     }
 }
