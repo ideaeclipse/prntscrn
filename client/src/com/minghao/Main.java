@@ -47,8 +47,12 @@ public class Main {
      * Create the PrntscrnFrame
      */
     private static void createFrame() throws AWTException {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame = new PrntscrnFrame(new Robot().createScreenCapture(new Rectangle(screenSize.width, screenSize.height)), token);
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Rectangle screenRect = new Rectangle(0, 0, 0, 0);
+        for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+            screenRect = screenRect.union(gd.getDefaultConfiguration().getBounds());
+        }
+        frame = new PrntscrnFrame(new Robot().createScreenCapture(screenRect), token);
     }
 
     /**
