@@ -46,7 +46,7 @@ public class Main {
     /**
      * Create the PrntscrnFrame
      */
-    private static void createFrame() throws AWTException {
+    private void createFrame() throws AWTException {
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle screenRect = new Rectangle(0, 0, 0, 0);
         for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
@@ -82,7 +82,7 @@ public class Main {
                         System.out.println("Take screenshot");
                         try {
                             if(token == null)
-                                token = AuthenticationFrame.token;
+                                token = AuthenticationFrame.getToken();
                             createFrame();
                         } catch (AWTException e) {
                             System.out.println("Couldn't take the screenshot error");

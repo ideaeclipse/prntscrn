@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 
 @SuppressWarnings("WeakerAccess")
 class AuthenticationFrame extends JFrame {
-    static String token;
+    private static String token;
 
     AuthenticationFrame() {
         super("Login");
@@ -26,6 +26,11 @@ class AuthenticationFrame extends JFrame {
         add(new AuthenticationPanel(this));
         setVisible(true);
     }
+
+    static String getToken(){
+        return token;
+    }
+
 
     private static class AuthenticationPanel extends JPanel {
         JButton submit;
@@ -101,7 +106,11 @@ class AuthenticationFrame extends JFrame {
                     writeToken();
                     parent.dispose();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    JLabel invalid = new JLabel("Invalid username and password", JLabel.CENTER);
+                    invalid.setBounds(150,25,200,150);
+                    invalid.setForeground(Color.RED);
+                    add(invalid);
+                    this.repaint();
                 }
                 System.out.println(token);
             });
