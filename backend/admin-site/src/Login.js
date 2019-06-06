@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {CreateUser, DeleteUser, ShowImages} from './Panel'
+import {CreateUser, DeleteUser, ShowImages, ShowVersions} from './Panel'
 
 /**
  * This class is used for the login component of the webpage
@@ -24,13 +24,16 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            version: '',
+            versionFile: null,
             token: '',
             key: Math.random(),
             file: null,
             isLoggedIn: false,
             showCreateUser: false,
             showDeleteUser: false,
-            showImages: false
+            showImages: false,
+            showVersions: false
         };
         this.image = React.createRef();
     }
@@ -87,29 +90,50 @@ class Login extends Component {
 
     /**
      * Called when the user clicks the Create User button
-     * sets the showCreateUser value to true
-     * set the showDeleteUser value to false
      */
     showCreateUser = () => {
-        this.setState({showCreateUser: !this.state.showCreateUser, showDeleteUser: false, showImages: false});
+        this.setState({
+            showCreateUser: !this.state.showCreateUser,
+            showDeleteUser: false,
+            showImages: false,
+            showVersions: false
+        });
     };
 
     /**
-     * Called when the user clicks the Create User button
-     * sets the showCreateUser value to true
-     * set the showDeleteUser value to false
+     * Called when the user clicks the Delete User button
      */
     showDeleteUser = () => {
-        this.setState({showCreateUser: false, showDeleteUser: !this.state.showDeleteUser, showImages: false});
+        this.setState({
+            showCreateUser: false,
+            showDeleteUser: !this.state.showDeleteUser,
+            showImages: false,
+            showVersions: false
+        });
     };
 
     /**
-     * Called when the user clicks the Create User button
-     * sets the showCreateUser value to true
-     * set the showDeleteUser value to false
+     * Called when the user clicks the Images button
      */
     showImages = () => {
-        this.setState({showCreateUser: false, showDeleteUser: false, showImages: !this.state.showImages});
+        this.setState({
+            showCreateUser: false,
+            showDeleteUser: false,
+            showImages: !this.state.showImages,
+            showVersions: false
+        });
+    };
+
+    /**
+     * Called when the user clicks the Versions button
+     */
+    showVersions = () => {
+        this.setState({
+            showCreateUser: false,
+            showDeleteUser: false,
+            showImages: false,
+            showVersions: !this.state.showVersions
+        });
     };
 
     /**
@@ -122,7 +146,7 @@ class Login extends Component {
         if (file != null) {
             let formData = new FormData();
             formData.append('file', file);
-            axios.post(process.env.REACT_APP_BACKEND + "/image", formData, {
+            axios.post(process.env.REACT_APP_BACKEND + "/executable", formData, {
                 headers: {
                     Authorization: this.state.token,
                     'Content-Type': 'multipart/form-data'
@@ -130,8 +154,7 @@ class Login extends Component {
             }).then(res => {
                 alert(res.data.status);
                 if (this.state.showImages) {
-                    this.setState({showImages: false});
-                    this.setState({showImages: true});
+                    this.setState({showImages: false}, () => this.setState({showImages: true}));
                 }
                 this.setState({key: Math.random()});
             }).catch(error => {
@@ -142,18 +165,65 @@ class Login extends Component {
     };
 
     /**
+     * Takes file from input field and uploads to image endpoint
+     * alerts user if there was an error or says File Uploaded
+     */
+    handleVersionFileChange = (event) => {
+        event.preventDefault();
+        let file = event.target.files[0];
+        if (file != null) {
+            this.setState({versionFile: file});
+        }
+    };
+
+    /**
+     * Updated version value
+     */
+    handleVersionChange = (event) => {
+        this.setState({version: event.target.value});
+    };
+
+    /**
+     * Make create version request to backend
+     */
+    pushVersion = (event) => {
+        let formData = new FormData();
+        formData.append('version', this.state.version);
+        formData.append('jar', this.state.versionFile);
+        axios.post(process.env.REACT_APP_BACKEND + "/executable", formData, {
+            headers: {
+                Authorization: this.state.token,
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => {
+            alert(res.data.status);
+            if (this.state.showVersions) {
+                this.setState({showVersions: false}, () => this.setState({showVersions: true}));
+            }
+            this.setState({key: Math.random()});
+        }).catch(error => {
+            alert(error.response.data.status);
+            this.setState({key: Math.random()});
+        });
+        event.preventDefault();
+    };
+
+    /**
      * Resets all state values which simulates you "logging" out
      */
     logout = () => {
         this.setState({
             username: '',
             password: '',
+            version: '',
+            versionFile: null,
             token: '',
             key: Math.random(),
             isLoggedIn: false,
             showCreateUser: false,
             showDeleteUser: false,
-            showImages: false
+            showImages: false,
+            showVersions: false
         });
     };
 
@@ -168,13 +238,29 @@ class Login extends Component {
                         <button onClick={this.showCreateUser}>Create User</button>
                         <button onClick={this.showDeleteUser}>Delete User</button>
                         <button onClick={this.showImages}>Images</button>
+                        <button onClick={this.showVersions}>Versions</button>
                         <button onClick={this.logout}>Logout</button>
                         {this.state.showCreateUser ? <CreateUser token={this.state.token}/> : null}
                         {this.state.showDeleteUser ? <DeleteUser token={this.state.token}/> : null}
                         {this.state.showImages ? <ShowImages token={this.state.token}/> : null}
+                        {this.state.showVersions ? <ShowVersions token={this.state.token}/> : null}
                     </div>
                     <div>
                         <input type="file" key={this.state.key} onChange={this.handleFileUpload}/>
+                    </div>
+                    <div>
+                        <form onSubmit={this.pushVersion}>
+                            <p>Version Creation</p>
+                            <label>
+                                Version:
+                                <input type="text" value={this.state.version} onChange={this.handleVersionChange}/>
+                            </label>
+                            <label>
+                                Executable:
+                                <input type="file" key={this.state.key} onChange={this.handleVersionFileChange}/>
+                            </label>
+                            <input type="submit" value="Submit"/>
+                        </form>
                     </div>
                 </div>
             );
