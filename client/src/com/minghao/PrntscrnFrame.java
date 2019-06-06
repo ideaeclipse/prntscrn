@@ -20,11 +20,22 @@ class PrntscrnFrame extends JFrame {
     private static String token;
 
     PrntscrnFrame(BufferedImage image, String token) {
+        try {
+            ImageIO.write(image, "png", new File("background.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         PrntscrnFrame.token = token;
         setUndecorated(true);
         setContentPane(new ImagePanel(image));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        add(new DrawPanel(this));
+        int minimum = 0;
+        for (GraphicsDevice g : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+            if (g.getDefaultConfiguration().getBounds().getX() < minimum)
+                minimum = (int) g.getDefaultConfiguration().getBounds().getX();
+        }
+        setLocation(minimum, 0);
+        add(new DrawPanel(this, image));
         pack();
         setVisible(true);
         int state = super.getExtendedState();
@@ -97,7 +108,7 @@ class PrntscrnFrame extends JFrame {
          *
          * @param frame parent jframe, allows for disposal
          */
-        DrawPanel(final JFrame frame) {
+        DrawPanel(final JFrame frame, final BufferedImage image) {
             setLayout(new BorderLayout());
             setOpaque(false);
 
@@ -131,20 +142,11 @@ class PrntscrnFrame extends JFrame {
             Timer timer = new Timer(250, e -> {
                 if (!isVisible()) {
                     try {
-                        if ((b.x > 0 || b.y > 0)) {
-                            Robot robot = new Robot();
-                            String fileName = "file" + ".png";
-                            Rectangle captureRect = new Rectangle(abs(a.x), abs(a.y), abs(b.x - a.x), abs(b.y - a.y));
-                            BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
-                            ImageIO.write(screenFullImage, "png", new File(fileName));
-                            frame.dispose();
-                            HttpRequests con = new HttpRequests();
-                            String url = String.valueOf(new JSONObject(con.postImage(fileName, "image", token)).get("uuid"));
-                            Desktop.getDesktop().browse(new URI(url));
-                        }
-                    } catch (AWTException | IOException ex) {
-                        System.err.println(ex);
-                    } catch (URISyntaxException e1) {
+                        ImageIO.write(image.getSubimage(Math.min(a.x, b.x), Math.min(a.y, b.y), abs(a.x - b.x), abs(a.y - b.y)), "png", new File("file" + ".png"));
+                        frame.dispose();
+                        String url = String.valueOf(new JSONObject(new HttpRequests().postImage("file" + ".png", "image", token)).get("uuid"));
+                        Desktop.getDesktop().browse(new URI(url));
+                    } catch (URISyntaxException | IOException e1) {
                         e1.printStackTrace();
                     }
                 }

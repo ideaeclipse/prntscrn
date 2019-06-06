@@ -47,12 +47,20 @@ public class Main {
      * Create the PrntscrnFrame
      */
     private void createFrame() throws AWTException {
-        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Rectangle screenRect = new Rectangle(0, 0, 0, 0);
-        for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
-            screenRect = screenRect.union(gd.getDefaultConfiguration().getBounds());
+        try {
+            if (new HttpRequests().testToken("auth_test", token) == 200) {
+                Rectangle screenRect = new Rectangle(0, 0, 0, 0);
+                for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+                    screenRect = screenRect.union(gd.getDefaultConfiguration().getBounds());
+                }
+                frame = new PrntscrnFrame(new Robot().createScreenCapture(screenRect), token);
+            }else{
+                token = null;
+                new AuthenticationFrame();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        frame = new PrntscrnFrame(new Robot().createScreenCapture(screenRect), token);
     }
 
     /**
@@ -77,11 +85,11 @@ public class Main {
              */
             @Override
             public void nativeKeyPressed(final NativeKeyEvent nativeKeyEvent) {
-                if (nativeKeyEvent.getKeyCode() == 3639) {
-                    if(frame == null || !frame.isVisible()) {
+                if (nativeKeyEvent.getKeyCode() == NativeKeyEvent.VC_PRINTSCREEN) {
+                    if (frame == null || !frame.isVisible()) {
                         System.out.println("Take screenshot");
                         try {
-                            if(token == null)
+                            if (token == null)
                                 token = AuthenticationFrame.getToken();
                             //System.out.println(token);
                             createFrame();
@@ -94,7 +102,6 @@ public class Main {
                 } else if (nativeKeyEvent.getKeyCode() == 1) {
                     if (frame != null)
                         frame.dispose();
-
                 }
             }
 
@@ -103,7 +110,7 @@ public class Main {
 
             }
         });
-        if(checkToken() != 200)
+        if (checkToken() != 200)
             new AuthenticationFrame();
 
     }
