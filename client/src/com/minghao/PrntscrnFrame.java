@@ -20,11 +20,6 @@ class PrntscrnFrame extends JFrame {
     private static String token;
 
     PrntscrnFrame(BufferedImage image, String token) {
-        try {
-            ImageIO.write(image, "png", new File("background.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         PrntscrnFrame.token = token;
         setUndecorated(true);
         setContentPane(new ImagePanel(image));
