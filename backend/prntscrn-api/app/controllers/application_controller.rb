@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
         if user.token == token
           @user = user
         else
-          render json: {status: "Please call /login again, your token has expired"}, status: 400
+          render json: {status: "Please call /login again, your token has expired"}, status: 401
         end
       end
     end
