@@ -83,7 +83,9 @@ public class Main {
                         try {
                             if(token == null)
                                 token = AuthenticationFrame.getToken();
+                            //System.out.println(token);
                             createFrame();
+
                         } catch (AWTException e) {
                             System.out.println("Couldn't take the screenshot error");
                             System.exit(-1);
