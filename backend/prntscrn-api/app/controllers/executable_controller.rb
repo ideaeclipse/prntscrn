@@ -9,7 +9,7 @@ class ExecutableController < ApplicationController
   def index
     value = []
     Executable.all.each do |executable|
-      value << {version: executable.version, url: "#{ENV["API_URL"]}/image/#{executable.version}"}
+      value << {version: executable.version, url: "#{ENV["API_URL"]}/executable/#{executable.version}"}
     end
     render json: value
   end
