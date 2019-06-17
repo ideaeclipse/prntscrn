@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class Main {
     private static PrntscrnFrame frame = null;
-    private static String token;
+    private static String token = null;
 
     public static void main(String[] arg) {
         try {
@@ -87,11 +87,9 @@ public class Main {
             public void nativeKeyPressed(final NativeKeyEvent nativeKeyEvent) {
                 if (nativeKeyEvent.getKeyCode() == NativeKeyEvent.VC_PRINTSCREEN) {
                     if (frame == null || !frame.isVisible()) {
-                        System.out.println("Take screenshot");
                         try {
                             if (token == null)
                                 token = AuthenticationFrame.getToken();
-                            //System.out.println(token);
                             createFrame();
 
                         } catch (AWTException e) {

@@ -35,7 +35,6 @@ class PrntscrnFrame extends JFrame {
         setVisible(true);
         int state = super.getExtendedState();
         state &= ~JFrame.ICONIFIED;
-        System.out.println(super.getExtendedState());
         setExtendedState(state);
         setAlwaysOnTop(true);
         toFront();

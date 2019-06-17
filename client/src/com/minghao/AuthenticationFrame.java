@@ -94,7 +94,6 @@ class AuthenticationFrame extends JFrame {
             submit = new JButton("Submit");
             submit.setBounds(200, 225, 100, 35);
             submit.addActionListener(e -> {
-                System.out.println("submitted");
                 try {
                     String userName = getUserNameText();
                     String password = getPasswordText();
@@ -112,7 +111,6 @@ class AuthenticationFrame extends JFrame {
                     add(invalid);
                     this.repaint();
                 }
-                System.out.println(token);
             });
             this.add(submit);
         }

@@ -1,5 +1,6 @@
 package com.minghao;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.net.ssl.*;
@@ -20,7 +21,7 @@ public class HttpRequests {
     /**
      * Send a JSonObject to REST service
      *
-     * @param url endpoint
+     * @param url    endpoint
      * @param Object JSONOBJECT being send to rest service
      * @return auth. token
      * @throws IOException
@@ -40,13 +41,12 @@ public class HttpRequests {
     /**
      * Check if existing token still valid
      *
-     * @param url endpoint
+     * @param url   endpoint
      * @param token auth. token
      * @return status code
      * @throws IOException
      */
     public int testToken(String url, String token) throws IOException {
-        System.out.println(token + " " + url);
         HttpsURLConnection con = openConnection(new URL(APIBASE + url));
         con.setRequestProperty("Authorization", token);
         con.setRequestProperty("Accept", "application/json");
@@ -54,29 +54,11 @@ public class HttpRequests {
     }
 
     /**
-     *
-     *
-     * @param inputStream
-     * @return Token from the rest service
-     * @throws IOException
-     */
-    private String printOutputStream(final InputStream inputStream) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-        String string;
-        StringBuilder response = new StringBuilder();
-        while ((string = in.readLine()) != null) {
-            response.append(string);
-        }
-        in.close();
-        return response.toString();
-    }
-
-    /**
      * Uploading the image
      *
      * @param fileName Name of file
-     * @param url endpoint
-     * @param token Auth. token
+     * @param url      endpoint
+     * @param token    Auth. token
      * @return url to the image upload
      * @throws IOException
      */
@@ -106,6 +88,29 @@ public class HttpRequests {
             return printOutputStream(con.getInputStream());
         }
         return null;
+    }
+
+    public String getVerison(String url) throws IOException {
+        HttpsURLConnection con = openConnection(new URL(APIBASE + url));
+        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        con.setRequestProperty("Accept", "application/json");
+        return printOutputStream(con.getInputStream());
+    }
+
+    /**
+     * @param inputStream
+     * @return Token from the rest service
+     * @throws IOException
+     */
+    private String printOutputStream(final InputStream inputStream) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+        String string;
+        StringBuilder response = new StringBuilder();
+        while ((string = in.readLine()) != null) {
+            response.append(string);
+        }
+        in.close();
+        return response.toString();
     }
 
 }
