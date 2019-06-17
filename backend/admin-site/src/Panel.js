@@ -217,3 +217,58 @@ export class ShowImages extends Component {
         return <ul>{this.state.data}</ul>;
     }
 }
+
+/**
+ * Display all versions
+ */
+export class ShowVersions extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {data: null};
+    }
+
+    /**
+     * Loads all versions into a list
+     */
+    componentDidMount() {
+        axios.get(process.env.REACT_APP_BACKEND + '/executable', {
+            headers: {
+                Authorization: this.props.token
+            }
+        }).then(res => {
+            let value = [];
+            for (let i = 0; i < res.data.length; i++) {
+                value.push(<li key={i}><a href={process.env.REACT_APP_BACKEND + "/executable/" + res.data[i].version}
+                                          target="_blank" rel="noopener noreferrer">{res.data[i].version} </a>
+                    <button onClick={() => this.deleteVersion(res.data[i].version)}>Delete</button>
+                </li>)
+            }
+            if (res.data.length === 0)
+                value.push(<li key={0}>No Versions are currently stored</li>);
+            this.setState({data: value})
+        }).catch(error => {
+            alert(error)
+        })
+    }
+
+    /**
+     * Delete version with id that is passed
+     * @param id id to delete
+     */
+    deleteVersion = (id) => {
+        axios.delete(process.env.REACT_APP_BACKEND + '/executable/' + id, {
+            headers: {
+                Authorization: this.props.token
+            }
+        }).then(res => {
+            alert(res.data.status);
+            this.componentDidMount();
+        }).catch(error => {
+            alert(error);
+        });
+    };
+
+    render() {
+        return <ul>{this.state.data}</ul>;
+    }
+}

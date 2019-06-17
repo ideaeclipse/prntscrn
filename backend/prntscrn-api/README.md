@@ -108,3 +108,34 @@ Rails version: 5.2.3
         * Returns a status code of 400 if the id doesn't exist in the database
     * Success
         * Returns a json string saying the image was deleted 
+
+* GET /executable
+    * Public
+    * Error
+        * None
+    * Success
+        * Returns a json array of all executables entries that exist, each sub json string contains one url and one version
+
+* GET /executable/:version
+    * Public
+    * Errors
+        * Returns a status code of 400 if the version doesn't exist in the database
+    * Success
+        * Downloads the file
+
+* POST /executable
+    * User must pass a valid Admin Authorization token in request header
+    * Requires form data with the key jar and the value must be file, also must pass a key version with the version number
+    * Errors
+        * Authentication is handled by the application controller
+        * Returns 400 if the version exists
+    * Success
+        * Returns a json string with the success status
+
+* DELETE /executable/:version
+    * User must pass a valid Admin Authorization token in request header
+    * Errors
+        * Returns a status code of 400 if the version doesn't exist in the database
+    * Success
+        * Returns a json string saying the image was deleted 
+
