@@ -1,24 +1,13 @@
 package com.minghao;
 
-import com.sun.jna.platform.win32.Advapi32Util;
-import jdk.jshell.spi.ExecutionControlProvider;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
+import org.json.JSONObject;
 import javax.net.ssl.*;
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import static com.sun.jna.platform.win32.WinReg.HKEY_CURRENT_USER;
 
 @SuppressWarnings("WeakerAccess")
 public class HttpRequests {
