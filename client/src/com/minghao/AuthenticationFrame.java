@@ -102,6 +102,7 @@ class AuthenticationFrame extends JFrame {
                     token = String.valueOf(new JSONObject(con.sendJson("login", login)).get("token"));
                     writeToken();
                     parent.dispose();
+                    new Menu(errorFrame);
                 } catch (IOException e1) {
                     JLabel invalid = new JLabel("Invalid username and password", JLabel.CENTER);
                     invalid.setBounds(150,25,200,150);

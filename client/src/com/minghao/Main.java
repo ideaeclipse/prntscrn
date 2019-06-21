@@ -117,6 +117,7 @@ public class Main {
         });
         if (checkToken() != 200)
             new AuthenticationFrame(errorFrame);
-
+        else
+            new Menu(errorFrame);
     }
 }
