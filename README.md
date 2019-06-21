@@ -11,7 +11,7 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [X] Create a network utility to allow the client to access the backend/login
   - [X] Once the photo is taken, upload the photo to the designated end point, and display the url that it was upload to, to the user
   - [ ] Make the application a "trayable app" that waits for either someone to click the icon and hit take screenshot or their shortcut
-  - [ ] User Installer
+  - [x] User Installer
 
 - Backend
   - [X] Boiler plate OAuth2.0 Rails system
