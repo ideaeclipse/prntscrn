@@ -1,21 +1,12 @@
 package com.installer;
 
+import com.minghao.ErrorFrame;
 
-import java.io.IOException;
+public class Installer {
 
-public class Installer{
+    private final static ErrorFrame errorFrame = new ErrorFrame();
 
-    Installer(){
-        try {
-            new InstallFrame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String arg[]) {
+        new InstallFrame(errorFrame);
     }
-
-
-
-     public static void main(String arg[]){
-         new Installer();
-     }
 }

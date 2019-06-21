@@ -13,9 +13,11 @@ import java.io.PrintWriter;
 @SuppressWarnings("WeakerAccess")
 class AuthenticationFrame extends JFrame {
     private static String token;
+    private final ErrorFrame errorFrame;
 
-    AuthenticationFrame() {
+    AuthenticationFrame(final ErrorFrame errorFrame) {
         super("Login");
+        this.errorFrame = errorFrame;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(500, 350);
@@ -32,10 +34,9 @@ class AuthenticationFrame extends JFrame {
     }
 
 
-    private static class AuthenticationPanel extends JPanel {
+    private class AuthenticationPanel extends JPanel {
         JButton submit;
         JTextField userName, password;
-
 
         AuthenticationPanel(final JFrame parent) {
             // Panel information
@@ -73,9 +74,7 @@ class AuthenticationFrame extends JFrame {
             password.setBackground(Color.lightGray);
             password.addKeyListener(new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e) {
-
-                }
+                public void keyTyped(KeyEvent e) {}
 
                 @Override
                 public void keyPressed(KeyEvent e) {
@@ -84,9 +83,8 @@ class AuthenticationFrame extends JFrame {
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e) {
+                public void keyReleased(KeyEvent e) {}
 
-                }
             });
             this.add(password);
 
@@ -110,6 +108,7 @@ class AuthenticationFrame extends JFrame {
                     invalid.setForeground(Color.RED);
                     add(invalid);
                     this.repaint();
+                    errorFrame.writeError("The user has enter an invalid password, if you do not have an username or password; please contact the one and only mayo", e1, this.getClass());
                 }
             });
             this.add(submit);
@@ -124,7 +123,7 @@ class AuthenticationFrame extends JFrame {
                 printWriter.print(token);
                 printWriter.close();
             } catch (IOException e) {
-                e.printStackTrace();
+               errorFrame.writeError("Unable to write token to file, user does not have permission to write to that directory", e, this.getClass());
             }
         }
 

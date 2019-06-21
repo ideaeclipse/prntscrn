@@ -18,8 +18,10 @@ import static java.lang.Math.abs;
 class PrntscrnFrame extends JFrame {
 
     private static String token;
+    private final ErrorFrame errorFrame;
 
-    PrntscrnFrame(BufferedImage image, String token) {
+    PrntscrnFrame(BufferedImage image, final String token, final ErrorFrame errorFrame) {
+        this.errorFrame = errorFrame;
         PrntscrnFrame.token = token;
         setUndecorated(true);
         setContentPane(new ImagePanel(image));
@@ -30,7 +32,7 @@ class PrntscrnFrame extends JFrame {
                 minimum = (int) g.getDefaultConfiguration().getBounds().getX();
         }
         setLocation(minimum, 0);
-        add(new DrawPanel(this, image));
+        add(new DrawPanel(this, image, errorFrame));
         pack();
         setVisible(true);
         int state = super.getExtendedState();
@@ -68,7 +70,7 @@ class PrntscrnFrame extends JFrame {
         /**
          * Allows for you to call pack in the frame.
          *
-         * @return tells the parent jframe how big the image is
+         * @return tells the parent JFrame how big the image is
          */
 
         @Override
@@ -102,7 +104,7 @@ class PrntscrnFrame extends JFrame {
          *
          * @param frame parent jframe, allows for disposal
          */
-        DrawPanel(final JFrame frame, final BufferedImage image) {
+        DrawPanel(final JFrame frame, final BufferedImage image, ErrorFrame errorFrame) {
             setLayout(new BorderLayout());
             setOpaque(false);
 
@@ -137,11 +139,13 @@ class PrntscrnFrame extends JFrame {
                 if (!isVisible()) {
                     try {
                         ImageIO.write(image.getSubimage(Math.min(a.x, b.x), Math.min(a.y, b.y), abs(a.x - b.x), abs(a.y - b.y)), "png", new File("file" + ".png"));
-                        frame.dispose();
                         String url = String.valueOf(new JSONObject(new HttpRequests().postImage("file" + ".png", "image", token)).get("uuid"));
                         Desktop.getDesktop().browse(new URI(url));
-                    } catch (URISyntaxException | IOException e1) {
-                        e1.printStackTrace();
+                        frame.dispose();
+                    } catch (URISyntaxException e1) {
+                        errorFrame.writeError("URLSyntax error, Please contact the one and only mayo!", e1, this.getClass());
+                    } catch (IOException e2){
+                        errorFrame.writeError("One or both of the two following error(s) has occurred: Unable open connection or unable to upload image. Please contact the one and only mayo!", e2, this.getClass());
                     }
                 }
             });
