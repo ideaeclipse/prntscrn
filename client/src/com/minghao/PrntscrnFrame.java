@@ -141,12 +141,12 @@ class PrntscrnFrame extends JFrame {
                         ImageIO.write(image.getSubimage(Math.min(a.x, b.x), Math.min(a.y, b.y), abs(a.x - b.x), abs(a.y - b.y)), "png", new File("file" + ".png"));
                         String url = String.valueOf(new JSONObject(new HttpRequests().postImage("file" + ".png", "image", token)).get("uuid"));
                         Desktop.getDesktop().browse(new URI(url));
-                        frame.dispose();
                     } catch (URISyntaxException e1) {
                         errorFrame.writeError("URLSyntax error, Please contact the one and only mayo!", e1, this.getClass());
                     } catch (IOException e2){
                         errorFrame.writeError("One or both of the two following error(s) has occurred: Unable open connection or unable to upload image. Please contact the one and only mayo!", e2, this.getClass());
                     }
+                    frame.dispose();
                 }
             });
             timer.setRepeats(false);

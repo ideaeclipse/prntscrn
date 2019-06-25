@@ -36,7 +36,6 @@ class Menu extends JFrame {
             trayIcon = new TrayIcon(image, "PrintScreen-Clone", popup);
             trayIcon.setImageAutoSize(true);
 
-
             // Setting the state when in tray and when not in tray
             addWindowStateListener(e -> {
                 if (e.getNewState() == ICONIFIED) {
@@ -80,13 +79,15 @@ class Menu extends JFrame {
             setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setResizable(false);
+
+            this.add(new MenuPanel());
         }
     }
 
     private class MenuPanel extends JPanel{
-
         MenuPanel(){
 
         }
+
     }
 }

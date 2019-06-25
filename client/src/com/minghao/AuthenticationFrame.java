@@ -105,11 +105,13 @@ class AuthenticationFrame extends JFrame {
                     new Menu(errorFrame);
                 } catch (IOException e1) {
                     JLabel invalid = new JLabel("Invalid username and password", JLabel.CENTER);
-                    invalid.setBounds(150,25,200,150);
-                    invalid.setForeground(Color.RED);
-                    add(invalid);
-                    this.repaint();
-                    errorFrame.writeError("The user has enter an invalid password, if you do not have an username or password; please contact the one and only mayo", e1, this.getClass());
+                    if (!invalid.isVisible()) {
+                        invalid.setBounds(150, 25, 200, 150);
+                        invalid.setForeground(Color.RED);
+                        add(invalid);
+                        this.repaint();
+                        errorFrame.writeError("The user has enter an invalid password, if you do not have an username or password; please contact the one and only mayo", e1, this.getClass());
+                    }
                 }
             });
             this.add(submit);

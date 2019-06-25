@@ -11,7 +11,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.minghao.Main</mainClass>
+                            <mainClass>com.installer.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -39,7 +39,7 @@
         </plugins>
     </build>
 
-    <groupId>groupId</groupId>
+    <groupId>TheOneAndOnlyMayo</groupId>
     <artifactId>prntscrn-clone</artifactId>
     <version>1.0</version>
 

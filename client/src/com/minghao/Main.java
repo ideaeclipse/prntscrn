@@ -13,13 +13,14 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class Main {
     private static PrntscrnFrame frame = null;
     private static String token = null;
     private static final ErrorFrame errorFrame = new ErrorFrame();
 
-    public static void main(String[] arg) {
 
+    public static void main(String[] arg) {
         try {
             new Main();
         } catch (NativeHookException e) {
@@ -115,9 +116,14 @@ public class Main {
 
             }
         });
+
+
         if (checkToken() != 200)
             new AuthenticationFrame(errorFrame);
-        else
+        else {
             new Menu(errorFrame);
+
+        }
+
     }
 }
