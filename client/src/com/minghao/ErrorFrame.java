@@ -31,7 +31,7 @@ public class ErrorFrame extends JFrame {
         Logger logger = Logger.getLogger(aClass.toString());
 
         try {
-            FileHandler FH = new FileHandler(aClass.toString());
+            FileHandler FH = new FileHandler(aClass.toString() + "txt");
             logger.addHandler(FH);
             SimpleFormatter formatter = new SimpleFormatter();
             FH.setFormatter(formatter);

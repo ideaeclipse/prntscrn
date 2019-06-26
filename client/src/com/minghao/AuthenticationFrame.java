@@ -106,7 +106,7 @@ class AuthenticationFrame extends JFrame {
                 } catch (IOException e1) {
                     JLabel invalid = new JLabel("Invalid username and password", JLabel.CENTER);
                     if (!invalid.isVisible()) {
-                        invalid.setBounds(150, 25, 200, 150);
+                        invalid.setBounds(150, 300, 200, 150);
                         invalid.setForeground(Color.RED);
                         add(invalid);
                         this.repaint();
