@@ -5,6 +5,15 @@ This is project will utilize the public imgur api to store photos or local stora
 The purpose of this is to create a private alternative to lightshot, with no adds and when you click on the link you get the raw photo or gif instead of a landing page used to make ad revenue
 
 ## Task tracking list
+- Publications
+  - [ ] Setup Secondary server to handle the sites
+  - [ ] Create frontend webpage to display the homepage, allow for downloading of the installer, and creating user accounts
+  - [ ] Modify backend to allow for linkage of uploaded images to user accounts
+  - [ ] Allow users to view all urls they have uploaded.
+  - [ ] Setup smtp server to handle mailing requests view the new domain (prntscrn.ca)
+  - [ ] Setup kubernetes cluster to host the three services (website, admin panel, api)
+  - [ ] Make it so the api is public and documented on the main site so developers can use this also as image storage.
+
 - Client
   - [X] Take a screenshot of the main monitor and store it inside a temp directory
   - [X] Take a screenshot of a user slected region of the monitor and store it
@@ -22,9 +31,3 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [X] Kubernetes cluster to run all services
   - [X] "Make" file to install everything with 1 command
   - [ ] Staticstics on admin panel
-
-
-- Auto purger
-  - [ ] What language to use
-  - [ ] Sleep thread that queries all images that are an hour or older, every hour and deletes them
-  - [ ] Make this run with the kubernetes cluster and or the base install with just docker
