@@ -19,9 +19,9 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [X] Take a screenshot of a user slected region of the monitor and store it
   - [X] Create a network utility to allow the client to access the backend/login
   - [X] Once the photo is taken, upload the photo to the designated end point, and display the url that it was upload to, to the user
-  - [ ] Make the application a "trayable app" that waits for either someone to click the icon and hit take screenshot or their shortcut
+  - [x] Make the application a "trayable app" that waits for either someone to click the icon and hit take screenshot or their shortcut
   - [x] User Installer
-
+  - [ ] Add functions for menu 
 - Backend
   - [X] Boiler plate OAuth2.0 Rails system
   - [X] Basic admin panel to manage users
