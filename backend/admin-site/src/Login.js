@@ -146,7 +146,7 @@ class Login extends Component {
         if (file != null) {
             let formData = new FormData();
             formData.append('file', file);
-            axios.post(process.env.REACT_APP_BACKEND + "/executable", formData, {
+            axios.post(process.env.REACT_APP_BACKEND + "/image", formData, {
                 headers: {
                     Authorization: this.state.token,
                     'Content-Type': 'multipart/form-data'

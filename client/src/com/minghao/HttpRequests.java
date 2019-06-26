@@ -9,7 +9,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 
-@SuppressWarnings("WeakerAccess")
+/**
+ * This class is used to make web requests to the backend api
+ *
+ * @author {CompanyName}
+ */
 public class HttpRequests {
 
 
@@ -34,7 +38,7 @@ public class HttpRequests {
      * @param Object JSONObject being send to rest service
      * @return auth. token
      */
-    public String sendJson(final String url, final JSONObject Object) throws IOException {
+    String sendJson(final String url, final JSONObject Object) throws IOException {
         HttpsURLConnection con = openConnection(new URL(APIBASE + url));
         con.setDoOutput(true);
         con.setRequestMethod("POST");
@@ -53,24 +57,14 @@ public class HttpRequests {
      * @param token auth. token
      * @return status code
      */
-    public int testToken(String url, String token) throws IOException {
+    int testToken(final String url, final String token) throws IOException {
         HttpsURLConnection con = openConnection(new URL(APIBASE + url));
         con.setRequestProperty("Authorization", token);
         con.setRequestProperty("Accept", "application/json");
         return con.getResponseCode();
     }
 
-    /**
-     * Uploading the image
-     *
-     * @param fileName Name of file
-     * @param url      endpoint
-     * @param token    Auth. token
-     * @return url to the image upload
-     */
-    public String postImage(String fileName, String url, String token) throws IOException {
-        File file = new File(fileName);
-
+    String postImage(final File file, final String url, final String token) throws IOException {
         if (file.exists()) {
             String attachmentFileName = file.getName();
             String crlf = "\r\n";
@@ -104,7 +98,7 @@ public class HttpRequests {
      * @return All the version + URL download link
      * @throws IOException Unable to connect to REST service
      */
-    public String getVersion(String url) throws IOException {
+    public String getVersion(final String url) throws IOException {
         HttpsURLConnection con = openConnection(new URL(APIBASE + url));
         con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         con.setRequestProperty("Accept", "application/json");

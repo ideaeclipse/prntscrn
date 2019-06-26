@@ -10,11 +10,30 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@SuppressWarnings("WeakerAccess")
+/**
+ * This class is used to make the user login
+ *
+ * @author {CompanyName}
+ */
 class AuthenticationFrame extends JFrame {
-    private static String token;
+    /**
+     * Instance of authentication panel, to allow for synchronized code execution see {@link AuthenticationFrame#getToken()}
+     */
+    private final AuthenticationPanel frame;
+
+    /**
+     * Instance of an errorFrame
+     */
     private final ErrorFrame errorFrame;
 
+    /**
+     * Web token, allows for web requests
+     */
+    private String token;
+
+    /**
+     * @param errorFrame passed instance of the errorframe
+     */
     AuthenticationFrame(final ErrorFrame errorFrame) {
         super("Login");
         this.errorFrame = errorFrame;
@@ -25,19 +44,51 @@ class AuthenticationFrame extends JFrame {
         setResizable(false);
 
         // JPanel
-        add(new AuthenticationPanel(this));
+        frame = new AuthenticationPanel(this);
+        add(frame);
         setVisible(true);
     }
 
-    static String getToken(){
+    /**
+     * This function waits for the notification from the submission if the token is null
+     * else it just returns the token
+     *
+     * @return token gather via a web request
+     */
+    String getToken() {
+        if (token == null)
+            try {
+                synchronized (frame) {
+                    frame.wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         return token;
     }
 
 
-    private class AuthenticationPanel extends JPanel {
-        JButton submit;
-        JTextField userName, password;
+    /**
+     * TODO: allow the user to hit enter instead of the submit button
+     * This class displays the input boxes for the user to enter their username and password
+     *
+     * @author {CompanyName}
+     */
+    private final class AuthenticationPanel extends JPanel {
 
+        /**
+         * Button to handle submit
+         */
+        private final JButton submit;
+
+        /**
+         * Text fields to enter the userName and password
+         */
+        private final JTextField userName, password;
+
+        /**
+         * @param parent parent frame instance
+         */
         AuthenticationPanel(final JFrame parent) {
             // Panel information
             this.setLayout(null);
@@ -56,7 +107,7 @@ class AuthenticationFrame extends JFrame {
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                   if(userName.getText().equals("Username"))
+                    if (userName.getText().equals("Username"))
                         userName.setText("");
                 }
 
@@ -74,16 +125,18 @@ class AuthenticationFrame extends JFrame {
             password.setBackground(Color.lightGray);
             password.addKeyListener(new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e) {}
+                public void keyTyped(KeyEvent e) {
+                }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    if(password.getText().equals("Password"))
+                    if (password.getText().equals("Password"))
                         password.setText("");
                 }
 
                 @Override
-                public void keyReleased(KeyEvent e) {}
+                public void keyReleased(KeyEvent e) {
+                }
 
             });
             this.add(password);
@@ -91,6 +144,8 @@ class AuthenticationFrame extends JFrame {
             // JButton
             submit = new JButton("Submit");
             submit.setBounds(200, 225, 100, 35);
+
+            //Notifies the synchronized lock when the token is gathered
             submit.addActionListener(e -> {
                 try {
                     String userName = getUserNameText();
@@ -102,6 +157,9 @@ class AuthenticationFrame extends JFrame {
                     token = String.valueOf(new JSONObject(con.sendJson("login", login)).get("token"));
                     writeToken();
                     parent.dispose();
+                    synchronized (this) {
+                        this.notifyAll();
+                    }
                     new Menu(errorFrame);
                 } catch (IOException e1) {
                     JLabel invalid = new JLabel("Invalid username and password", JLabel.CENTER);
@@ -120,18 +178,19 @@ class AuthenticationFrame extends JFrame {
         /**
          * Write the token to file
          */
-        private void writeToken(){
+        private void writeToken() {
             try {
                 PrintWriter printWriter = new PrintWriter(new FileWriter("tokenText.txt"));
                 printWriter.print(token);
                 printWriter.close();
             } catch (IOException e) {
-               errorFrame.writeError("Unable to write token to file, user does not have permission to write to that directory", e, this.getClass());
+                errorFrame.writeError("Unable to write token to file, user does not have permission to write to that directory", e, this.getClass());
             }
         }
 
         /**
          * Get string from username textfield
+         *
          * @return Input from username textfield
          */
         private String getUserNameText() {
@@ -140,6 +199,7 @@ class AuthenticationFrame extends JFrame {
 
         /**
          * Get string from password textfield
+         *
          * @return Input from password textfield
          */
         private String getPasswordText() {

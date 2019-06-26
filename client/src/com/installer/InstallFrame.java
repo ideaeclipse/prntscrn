@@ -80,7 +80,7 @@ class InstallFrame extends JFrame {
                                 // Get the file from the url
                                 BufferedInputStream in = new BufferedInputStream(new URL(urlTemp).openStream());
                                 FileOutputStream fileOutputStream = new FileOutputStream(jfc.getSelectedFile() + "\\PrintScreen-Clone.exe.jar");
-                                byte dataBuffer[] = new byte[1024];
+                                byte[] dataBuffer = new byte[1024];
                                 int bytesRead;
                                 while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                                     fileOutputStream.write(dataBuffer, 0, bytesRead);
