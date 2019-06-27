@@ -18,7 +18,7 @@ public class HttpRequests {
 
 
     // APIBase of PrintScreen-Clone
-    private final String APIBASE = "https://prntscrn-api.thiessem.ca/";
+    private final String APIBASE = "https://api.prntscrn.ca/";
 
     /**
      * Open a HTTpsURLConnection
