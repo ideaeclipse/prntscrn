@@ -10,7 +10,7 @@ The purpose of this is to create a private alternative to lightshot, with no add
   - [ ] Create frontend webpage to display the homepage, allow for downloading of the installer, and creating user accounts
   - [ ] Modify backend to allow for linkage of uploaded images to user accounts
   - [ ] Allow users to view all urls they have uploaded.
-  - [ ] Setup smtp server to handle mailing requests view the new domain (prntscrn.ca)
+  - [X] Setup smtp server to handle mailing requests view the new domain (prntscrn.ca)
   - [ ] Setup kubernetes cluster to host the three services (website, admin panel, api)
   - [ ] Make it so the api is public and documented on the main site so developers can use this also as image storage.
 
