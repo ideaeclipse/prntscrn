@@ -1,6 +1,4 @@
-# prntscrn-clone
-Clone of the popular tool lightshot https://app.prntscr.com/en/index.html
-
+# prntscrn
 This is project will utilize the public imgur api to store photos or local storage
 The purpose of this is to create a private alternative to lightshot, with no adds and when you click on the link you get the raw photo or gif instead of a landing page used to make ad revenue
 
