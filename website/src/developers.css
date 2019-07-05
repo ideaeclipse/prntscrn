@@ -1,0 +1,134 @@
+.devL, .devR {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+.devL {
+    float: left;
+}
+
+.devR {
+    float: right;
+}
+
+.card {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: inline-block;
+    height: 80%;
+    width: 80%;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    background-color: #f5f5f5;
+    //border-style: solid;
+    //border-width: 5px;
+    //border-color: #FF8C00;
+    padding: 30px;
+}
+
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cardTop {
+    position: relative;
+    font-size: 20pt;
+    height: 5%;
+    width: 100%;
+}
+
+.cardTopLeft {
+    float: left;
+}
+
+.cardTopRight {
+    float: right;
+}
+
+.cardContainer, .cardContainer-Top {
+    position: relative;
+    text-align: left;
+    width: 100%;
+
+    overflow-y: auto;
+
+    //border-style: solid;
+    //border-width: 5px;
+}
+
+.cardContainer-Top {
+    height: 95%;
+}
+
+.cardContainer {
+    height: 100%;
+}
+
+.name {
+    font-size: 40pt;
+    font-weight: 600;
+}
+
+.heading {
+    font-size: 25pt;
+    font-weight: 600;
+}
+
+.description {
+    font-size: 20pt;
+}
+
+.description, .email {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.email, .link {
+    color: #000000;
+    -o-transition: color .2s ease-out, background 1s ease-in;
+    -moz-transition: color .2s ease-out, background 1s ease-in;
+    -webkit-transition: color .2s ease-out, background 1s ease-in;
+    transition: color .2s ease-out, background 1s ease-in;
+}
+
+.email:hover, .link:hover {
+    color: #FF8C00;
+}
+
+.list, .list-noBullets {
+    font-size: 20pt;
+}
+
+.list-noBullets {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin-left: 0;
+}
+
+.list input {
+    -ms-transform: scale(2);
+    -moz-transform: scale(2);
+    -webkit-transform: scale(2);
+    -o-transform: scale(2);
+    transform: scale(2);
+    padding: 10px;
+}
+
+.question {
+    font-weight: 900;
+}
+
+.footer {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}

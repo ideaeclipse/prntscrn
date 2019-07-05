@@ -1,0 +1,48 @@
+.title {
+    text-align: center;
+    font-size: 40pt;
+    font-weight: 900;
+}
+
+.sub-title {
+    text-align: center;
+    font-size: 30pt;
+    font-weight: 900;
+}
+
+.list-title {
+    font-size: 25pt;
+    font-weight: 900;
+}
+
+.center-with-width50, .center-with-width80, .center-with-width100 {
+    position: relative;
+    height: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center-with-width50 {
+    width: 50%;
+}
+
+.center-with-width80 {
+    width: 80%;
+}
+
+.center-with-width100 {
+    width: 100%;
+}
+
+.hyper-link {
+    color: #000000;
+    -o-transition: color .2s ease-out, background 1s ease-in;
+    -moz-transition: color .2s ease-out, background 1s ease-in;
+    -webkit-transition: color .2s ease-out, background 1s ease-in;
+    transition: color .2s ease-out, background 1s ease-in;
+    text-decoration: none;
+}
+
+.hyper-link:hover {
+    color: #FF8C00;
+}

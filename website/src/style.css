@@ -1,0 +1,91 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #000000;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 9%;
+    width: 100%;
+    box-shadow: 0 0.25rem 0.125rem 0 rgba(0, 0, 0, 0.05);
+
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.header .center {
+    font-size: 50pt;
+    font-weight: 600;
+}
+
+.left {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.right {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.header .left p, .header .center p, .header .right p {
+    -o-transition: color .2s ease-out, background 1s ease-in;
+    -moz-transition: color .2s ease-out, background 1s ease-in;
+    -webkit-transition: color .2s ease-out, background 1s ease-in;
+    transition: color .2s ease-out, background 1s ease-in;
+}
+
+.header .left p, .header .right p {
+    font-size: 20pt;
+    color: #000000;
+}
+
+.header .left p:hover, .header .right p:hover, .header .center p:hover {
+    color: #FF8C00;
+}
+
+.sideBySide p {
+    float: none;
+    position: relative;
+    display: inline-block;
+}
+
+.left .sideBySide p {
+    margin-right: 10px;
+}
+
+.right .sideBySide p {
+    margin-left: 10px;
+}
+
+.mainDiv {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 90%;
+    width: 100%;
+    overflow-y: hidden;
+}
+
+.wrapper-center{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
